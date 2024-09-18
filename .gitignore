@@ -1,0 +1,10 @@
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+CTestTestfile.cmake
+CTestTestfile.cmake.tmp
+compile_commands.json
+Makefile
+cmake_install.cmake
+install_manifest.txt
+build/
