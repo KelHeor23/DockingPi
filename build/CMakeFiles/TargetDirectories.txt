@@ -1,0 +1,7 @@
+/home/kelheor/MyJob/DockingPi/build/CMakeFiles/DockingPi.dir
+/home/kelheor/MyJob/DockingPi/build/CMakeFiles/edit_cache.dir
+/home/kelheor/MyJob/DockingPi/build/CMakeFiles/rebuild_cache.dir
+/home/kelheor/MyJob/DockingPi/build/CMakeFiles/list_install_components.dir
+/home/kelheor/MyJob/DockingPi/build/CMakeFiles/install.dir
+/home/kelheor/MyJob/DockingPi/build/CMakeFiles/install/local.dir
+/home/kelheor/MyJob/DockingPi/build/CMakeFiles/install/strip.dir
