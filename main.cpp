@@ -1,7 +1,7 @@
 #include <iostream>
 #include <unistd.h>
 
-#include "Servo/Servo_SPT5535LV360.h"
+#include "Servo/Servo.h"
 
 int main()
 {
@@ -10,18 +10,6 @@ int main()
     if (wiringPiSetup() == -1) {
         std::cerr << "Ошибка инициализации WiringPi." << std::endl;
         return 1;
-    }
-
-    Servo_SPT5535LV360 servo1(7);
-
-    while (true) {
-        servo1.writePWM(PWM::CV10);
-        usleep(500000); // Подождать 0.5 секунды
-
-        servo1.writePWM(PWM::CCV10);
-        usleep(500000); // Подождать 0.5 секунды
-
-        servo1.writePWM(PWM::STOP);
     }
 
     return 0 ;
