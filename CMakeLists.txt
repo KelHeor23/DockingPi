@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(MAVSDK REQUIRED)
 
-add_executable(DockingPi main.cpp)
+add_executable(DockingPi main.cpp
+    Servo/Servo_SPT5535LV360.h Servo/Servo_SPT5535LV360.cpp
+)
 
 target_link_libraries(DockingPi
     MAVSDK::mavsdk             #All apps link against mavsdk library
