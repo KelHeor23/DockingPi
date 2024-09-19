@@ -6,7 +6,7 @@
 
 namespace PWM {
 enum SPT5535LV360 {
-    STOP    = 15,
+    STOP    = 0,
     CV1     = 16,   // Минимальная скорость по часовой стрелке
     CV2     = 17,
     CV3     = 18,
@@ -37,7 +37,6 @@ public:
     Servo_SPT5535LV360(int pin);
 
     void writePWM(PWM::SPT5535LV360 pwm);   // Установка ширины импульса для поворота сервопривода
-    void stop();                            // Полная остановка
 
 private:
     int m_pin = 0;                     // Пин которому присоединена серва

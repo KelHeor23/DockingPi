@@ -5,7 +5,6 @@
 
 int main()
 {
-
     std::cout << "docking begin" << std::endl;
 
     if (wiringPiSetup() == -1) {
@@ -17,17 +16,12 @@ int main()
 
     while (true) {
         servo1.writePWM(PWM::CV10);
-        usleep(1500000); // Подождать 0.5 секунды
-        servo1.stop();
-        usleep(1500000); // Подождать 0.5 секунды
+        usleep(500000); // Подождать 0.5 секунды
 
         servo1.writePWM(PWM::CCV10);
-        usleep(1500000); // Подождать 0.5 секунды
-        servo1.stop();
-        usleep(1500000); // Подождать 0.5 секунды
+        usleep(500000); // Подождать 0.5 секунды
 
         servo1.writePWM(PWM::STOP);
-        usleep(1500000); // Подождать 0.5 секунды
     }
 
     return 0 ;
