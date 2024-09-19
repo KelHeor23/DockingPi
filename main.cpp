@@ -2,7 +2,11 @@
 #include <mavsdk.h>
 #include <mavsdk/system.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
-//t12
+#include <thread>
+#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
+
+
+
 using namespace mavsdk;
 
 void print_health(Telemetry::Health health);
@@ -30,11 +34,35 @@ void print_rc_status(Telemetry::RcStatus rc_status)
     std::cout << "RC RSSI: " << rc_status.signal_strength_percent << '\n';
 }
 
+ 
+
+void handle_rc_channels_message(const mavlink_message_t& message) {
+    mavlink_rc_channels_t rc_channels;
+    mavlink_msg_rc_channels_decode(&message, &rc_channels);
+
+    // Проверяем, что канал 8 доступен
+    if (rc_channels.chancount >= 8) {
+        std::cout << "RC Channel 8: " << rc_channels.chan8_raw << std::endl;
+    } else {
+        std::cout << "RC Channel 8 is not available." << std::endl;
+    }
+}
+
 int main()
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
+    // ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult connection_result = mavsdk.add_any_connection("serial:///dev/serial0:57600");
+    if (connection_result != ConnectionResult::Success) {
+        std::cout << "Adding connection failed: " << connection_result << '\n';
+        return 0;
+    }
+
+    while (mavsdk.systems().size() == 0){
+        std::cout << "Systems wait connection" << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
 
     auto system = mavsdk.systems().at(0);
 
@@ -42,4 +70,17 @@ int main()
 
     telemetry->subscribe_health([](Telemetry::Health health) { print_health(health); });
     telemetry->subscribe_rc_status([](Telemetry::RcStatus rc_status) { print_rc_status(rc_status); });
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    std::cout << "tel: " << telemetry->position();
+
+    
+    auto mavlink_passthrough = MavlinkPassthrough(system);
+    // MavlinkPassthrough mavlink_passthrough(system.value());
+
+    // Подписываемся на сообщения MAVLink типа RC_CHANNELS
+    mavlink_passthrough.subscribe_message(MAVLINK_MSG_ID_RC_CHANNELS, handle_rc_channels_message);
+
+    // Ждем некоторое время, чтобы получить сообщения
+    std::this_thread::sleep_for(std::chrono::seconds(10));
+
 }
