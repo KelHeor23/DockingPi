@@ -11,8 +11,11 @@ add_executable(DockingPi main.cpp
     Servo/Servo_SPT5535LV360.h Servo/Servo_SPT5535LV360.cpp
 )
 
+find_library(WIRINGPI_LIBRARIES wiringPi)
+
 target_link_libraries(DockingPi
     MAVSDK::mavsdk             #All apps link against mavsdk library
+    ${WIRINGPI_LIBRARIES}
 )
 
 find_library(WIRINGPI_LIBRARIES wiringPi)
