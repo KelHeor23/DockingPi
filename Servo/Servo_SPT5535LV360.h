@@ -36,7 +36,8 @@ public:
     Servo_SPT5535LV360() = delete;
     Servo_SPT5535LV360(int pin);
 
-    void writePWM(PWM::SPT5535LV360 pwm); // Установка ширины импульса для поворота сервопривода
+    void writePWM(PWM::SPT5535LV360 pwm);   // Установка ширины импульса для поворота сервопривода
+    void stop();                            // Полная остановка
 
 private:
     int m_pin = 0;                     // Пин которому присоединена серва

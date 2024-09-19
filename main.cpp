@@ -18,8 +18,12 @@ int main()
     while (true) {
         servo1.writePWM(PWM::CV10);
         usleep(1500000); // Подождать 0.5 секунды
+        servo1.stop();
+        usleep(1500000); // Подождать 0.5 секунды
 
         servo1.writePWM(PWM::CCV10);
+        usleep(1500000); // Подождать 0.5 секунды
+        servo1.stop();
         usleep(1500000); // Подождать 0.5 секунды
 
         servo1.writePWM(PWM::STOP);
