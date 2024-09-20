@@ -5,9 +5,10 @@
 
 int main()
 {
+    MavlinkExchange::initMavlinkExchange();
+
     while (true) {
-        std::cout << "Ch8: " << MavlinkExchange::Instance().getChannelValues(8) << std::endl;
-        std::cout << "Ch9: " << MavlinkExchange::Instance().getChannelValues(9) << std::endl;
+        std::cout << "Ch8: " << MavlinkExchange::rc_channels.chan8_raw << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
