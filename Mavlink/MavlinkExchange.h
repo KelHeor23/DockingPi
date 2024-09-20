@@ -9,9 +9,9 @@
 namespace MavlinkExchange {
     using namespace mavsdk;
 
-    static Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
-    static auto system = mavsdk.systems().at(0);
-    static MavlinkPassthrough mavlink_passthrough = MavlinkPassthrough(system);
+    static std::unique_ptr<Mavsdk> mavsdk;
+    static std::shared_ptr<System> system;
+    static std::unique_ptr<MavlinkPassthrough> mavlink_passthrough;
 
     static mavlink_rc_channels_t rc_channels;
 
