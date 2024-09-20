@@ -9,7 +9,11 @@
 namespace MavlinkExchange {
     using namespace mavsdk;
 
-    mavlink_rc_channels_t rc_channels;
+    static Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    static auto system = mavsdk.systems().at(0);
+    static MavlinkPassthrough mavlink_passthrough = MavlinkPassthrough(system);
+
+    static mavlink_rc_channels_t rc_channels;
 
     void handle_rc_channels_message(const mavlink_message_t& message);
     void initMavlinkExchange();
