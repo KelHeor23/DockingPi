@@ -10,7 +10,7 @@ MavlinkExchange::MavlinkExchange() {
     mavsdk::ConnectionResult connection_result = mavsdk.add_any_connection("serial:///dev/serial0:57600");
     if (connection_result != mavsdk::ConnectionResult::Success) {
         std::cout << "Adding connection failed: " << connection_result << '\n';
-        throw "Abbort operation";
+//        throw "Abbort operation";
     }
 
     while (mavsdk.systems().size() == 0){
@@ -55,10 +55,13 @@ void MavlinkExchange::handle_rc_channels_message(const mavlink_message_t& messag
     mavlink_msg_rc_channels_decode(&message, &Channels::m_rc_channels);
 
     // Проверяем, что канал 8 доступен
-    if (Channels::m_rc_channels.chancount >= 8)
+    if (Channels::m_rc_channels.chancount >= 9) {
         Channels::m_ch8 = Channels::m_rc_channels.chan8_raw;
-    else
+        Channels::m_ch9 = Channels::m_rc_channels.chan9_raw;
+    } else {
         Channels::m_ch8 = 0;
+        Channels::m_ch9 = 0;
+    }
 
 }
 
@@ -67,6 +70,8 @@ uint16_t MavlinkExchange::getChannelValues(uint8_t ch)
     switch(ch){
     case 8:
         return Channels::m_ch8;
+    case 9:
+        return Channels::m_ch9;
     default:
         return 0;
     }

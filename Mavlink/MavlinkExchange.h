@@ -9,6 +9,7 @@
 namespace Channels {
     static mavlink_rc_channels_t m_rc_channels;
     static uint16_t m_ch8;
+    static uint16_t m_ch9;
 };
 
 class MavlinkExchange
