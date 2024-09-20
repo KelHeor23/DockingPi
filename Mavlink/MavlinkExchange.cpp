@@ -22,7 +22,7 @@ MavlinkExchange::MavlinkExchange() {
     auto mavlink_passthrough = mavsdk::MavlinkPassthrough(system);
     mavlink_passthrough.subscribe_message(MAVLINK_MSG_ID_RC_CHANNELS, handle_rc_channels_message);
 
-    std::make_shared<mavsdk::Telemetry>(system);
+    telemetry = std::make_shared<mavsdk::Telemetry>(system);
     telemetry->subscribe_health([this](mavsdk::Telemetry::Health health){print_health(health);});
     telemetry->subscribe_rc_status([this](mavsdk::Telemetry::RcStatus rc_status){print_rc_status(rc_status);});
 }
@@ -73,7 +73,7 @@ uint16_t MavlinkExchange::getChannelValues(uint8_t ch)
     case 9:
         return Channels::m_ch9;
     default:
-        return 0;
+        return 1;
     }
     return 0;
 }
