@@ -7,7 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(MAVSDK REQUIRED)
 
-add_executable(DockingPi main.cpp)
+add_executable(DockingPi main.cpp
+    Mavlink/MavlinkExchange.h Mavlink/MavlinkExchange.cpp)
 
 target_link_libraries(DockingPi
     MAVSDK::mavsdk             #All apps link against mavsdk library
