@@ -1,12 +1,13 @@
 #include <iostream>
+#include <thread>
 #include <unistd.h>
+#include <wiringPi.h>
 #include <mavsdk.h>
 #include <mavsdk/system.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
-#include <thread>
 #include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
 
-#include "Servo/Servo.h"
+#include "Docker/DockerFactory.h"
 
 using namespace mavsdk;
 
@@ -15,13 +16,30 @@ void exec_freq(){
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+    if (argc != 2) {
+        std::cerr << "Please write type of drone. Types: " << types_g << std::endl;
+        return 0;
+    }
+
+    std::string type(argv[1]);
+    DockerFactory factory;
+    std::unique_ptr<Docker> docker;
+
+    if (type.compare("Papa") == 0){
+        docker = factory.makeDocker(Dockers::Papa);
+    } else if (type.compare("Mama") == 0){
+        docker = factory.makeDocker(Dockers::Mama);
+    } else {
+        std::cerr << "unknow type of drone. Types: " << types_g << std::endl;
+        return 0;
+    }
+
     bool startPin = 0;
 
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     std::cout << "docking begin" << std::endl;
-
 
     if (wiringPiSetup() == -1) {
         std::cerr << "Ошибка инициализации WiringPi." << std::endl;
