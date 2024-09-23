@@ -6,6 +6,8 @@
 #include <thread>
 #include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
 
+#include "Servo/Servo.h"
+
 using namespace mavsdk;
 
 // Execution frequency
@@ -19,12 +21,13 @@ int main()
 
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     std::cout << "docking begin" << std::endl;
-#include "Servo/Servo.h"
+
 
     if (wiringPiSetup() == -1) {
         std::cerr << "Ошибка инициализации WiringPi." << std::endl;
         return 1;
     }
+
     // ConnectionResult ret = mavsdk.add_udp_connection();
     ConnectionResult connection_result = mavsdk.add_any_connection("serial:///dev/serial0:57600");
     if (connection_result != ConnectionResult::Success) {
@@ -53,6 +56,7 @@ int main()
             std::cout << "RC Channel 8 is not available." << std::endl;
             return 0;
         }
+        return 1;
     });
 
     while (true) {
