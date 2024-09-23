@@ -1,6 +1,6 @@
 #include "Servo_DS3235_270.h"
 
-Servo_DS3235_270::Servo_DS3235_270(int pin) : m_pin(pin) {
+Servo_DS3235_270::Servo_DS3235_270(uint8_t pin) : m_pin(pin) {
 }
 
 void Servo_DS3235_270::writePWM(PWM pwm){

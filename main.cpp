@@ -1,7 +1,6 @@
 #include <iostream>
 #include <thread>
 #include <unistd.h>
-#include <wiringPi.h>
 #include <mavsdk.h>
 #include <mavsdk/system.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
@@ -93,9 +92,9 @@ int main(int argc, char *argv[])
 
     while (true) {
         if (startPin)
-            std::cout << "Start" << std::endl;
+            docker->docking();
         else
-            std::cout << "Stop" << std::endl;
+            docker->undocking();
         exec_freq();
     }
     return 0;

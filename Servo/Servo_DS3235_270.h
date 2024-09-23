@@ -1,6 +1,7 @@
 #ifndef SERVO_DS3235_270_H
 #define SERVO_DS3235_270_H
 
+#include <cstdint>
 #include <wiringPi.h>
 #include <softPwm.h>
 
@@ -33,7 +34,7 @@ public:
 
 public:
     Servo_DS3235_270() = delete;
-    Servo_DS3235_270(int pin);
+    Servo_DS3235_270(uint8_t pin);
 
     void writePWM(PWM pwm);   // Установка ширины импульса для поворота сервопривода
 
