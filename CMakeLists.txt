@@ -11,6 +11,9 @@ add_executable(DockingPi main.cpp
     Servo/Servo_SPT5535LV360.h Servo/Servo_SPT5535LV360.cpp
     Servo/Servo_DS3235_270.h Servo/Servo_DS3235_270.cpp
     Servo/Servo.h
+    Docker/Docker.h
+    Docker/DockerMama.h Docker/DockerMama.cpp
+    Docker/DockerPapa.h Docker/DockerPapa.cpp
 )
 
 find_library(WIRINGPI_LIBRARIES wiringPi)

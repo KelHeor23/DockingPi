@@ -25,7 +25,7 @@ int main()
 
     if (wiringPiSetup() == -1) {
         std::cerr << "Ошибка инициализации WiringPi." << std::endl;
-        return 1;
+        return 0;
     }
 
     // ConnectionResult ret = mavsdk.add_udp_connection();
