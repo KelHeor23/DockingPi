@@ -29,6 +29,11 @@ int main(int argc, char *argv[])
             return 0;
         }
 
+        if (wiringPiSetup() == -1) {
+            std::cerr << "Ошибка инициализации WiringPi." << std::endl;
+            return 0;
+        }
+
         std::string type(argv[1]);
 
         if (type.compare("Papa") == 0){
@@ -52,11 +57,6 @@ int main(int argc, char *argv[])
 
     {
         std::cout << "docking begin" << std::endl;
-
-        if (wiringPiSetup() == -1) {
-            std::cerr << "Ошибка инициализации WiringPi." << std::endl;
-            return 0;
-        }
 
         ConnectionResult connection_result = mavsdk->add_any_connection("serial:///dev/serial0:57600");
         if (connection_result != ConnectionResult::Success) {
