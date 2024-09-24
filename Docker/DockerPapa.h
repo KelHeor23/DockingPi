@@ -14,6 +14,7 @@ public:
 
 private:
     void rodExtension();    // Фукнция выдвижения стрелы
+    void rodRetraction();   // Фукнция возврата стрелы
 };
 
 #endif // DOCKERPAPA_H

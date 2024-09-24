@@ -15,6 +15,7 @@ add_executable(DockingPi main.cpp
     Docker/DockerMama.h Docker/DockerMama.cpp
     Docker/DockerPapa.h Docker/DockerPapa.cpp
     Docker/DockerFactory.h
+    Docker/DockerPinout.h
 )
 
 find_library(WIRINGPI_LIBRARIES wiringPi)
