@@ -16,6 +16,7 @@ add_executable(DockingPi main.cpp
     Docker/DockerPapa.h Docker/DockerPapa.cpp
     Docker/DockerFactory.h
     Docker/DockerPinout.h
+    Mavlink/MavlinkExchange.h Mavlink/MavlinkExchange.cpp
 )
 
 find_library(WIRINGPI_LIBRARIES wiringPi)
