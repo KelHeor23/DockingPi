@@ -12,7 +12,7 @@ using namespace mavsdk;
 
 // Execution frequency
 void exec_freq(){
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
 
 int main(int argc, char *argv[])
@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
     }
     //-----------------------------------------------------------------------------------------------
 
+    //-----------------------------------------------------------------------------------------------
     /* Connect to Mavsdk and handle to rcChannels*/
     //-----------------------------------------------------------------------------------------------
 
@@ -58,7 +59,7 @@ int main(int argc, char *argv[])
     {
         std::cout << "docking begin" << std::endl;
 
-        ConnectionResult connection_result = mavsdk->add_any_connection("serial:///dev/serial0:57600");
+        ConnectionResult connection_result = mavsdk->add_any_connection("serial:///dev/serial0:115200");
         if (connection_result != ConnectionResult::Success) {
             std::cout << "Adding connection failed: " << connection_result << '\n';
             return 0;
