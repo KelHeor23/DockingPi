@@ -1,6 +1,7 @@
 #ifndef SERVO_SPT5535LV360_H
 #define SERVO_SPT5535LV360_H
 
+#include <cstdint>
 #include <wiringPi.h>
 #include <softPwm.h>
 
@@ -20,7 +21,7 @@ public:
         CV9     = 24,
         CV10    = 25,   // Максимальная скорость по часовой стрелке
         CCV1    = 14,   // Минимальная скорость против часовой стрелки
-        СCV2    = 13,
+        CCV2    = 13,
         CCV3    = 12,
         CCV4    = 11,
         CCV5    = 10,
@@ -33,7 +34,7 @@ public:
 
 public:
     Servo_SPT5535LV360() = delete;
-    Servo_SPT5535LV360(int pin);
+    Servo_SPT5535LV360(uint8_t pin);
 
     void writePWM(PWM pwm);   // Установка ширины импульса для поворота сервопривода
 
