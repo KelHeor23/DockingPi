@@ -26,6 +26,7 @@ int MavlinkExchange::init()
         mavlink_rc_channels_t rc_channels;
         mavlink_msg_rc_channels_decode(&message, &rc_channels);
         if (rc_channels.chancount >= 8) {
+            std::cout << "8ch" << std::endl;
             if (rc_channels.chan8_raw > 1600)
                 startPin = true;
             else

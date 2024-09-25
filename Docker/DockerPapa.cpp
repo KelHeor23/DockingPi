@@ -1,7 +1,7 @@
 #include "DockerPapa.h"
 
 DockerPapa::DockerPapa() {
-    //TODO:
+    //TODO: удалить как закончу с папой
     MSG_mama = "111";
 }
 
