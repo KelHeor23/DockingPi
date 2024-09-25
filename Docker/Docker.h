@@ -4,8 +4,7 @@
 #include "../Servo/Servo.h"
 
 #include "DockerPinout.h"
-
-
+#include <string>
 
 class Docker {
 public:
@@ -22,6 +21,24 @@ public:
     Servo_SPT5535LV360  servoCargo;     // Серва телеги
     Servo_DS3235_270    servoRightHook; // Серва правого крюка
     Servo_DS3235_270    servoLeftHook;  // Серва левого крюка
+
+public:
+    /*
+    MSG_mama
+    0 - готовность
+    1 - хуки закрылись
+    2 - телега пришла к маме
+    */
+    std::string MSG_mama = "000";          // Сообщение отправленное от мамы
+
+    /*
+    MSG_papa
+    0 - готовность
+    1 - стрела выдвинулась
+    2 - дроны стянулись
+    3 - телега покинула папу
+    */
+    std::string MSG_papa = "0000";         // Сообщение отправленное от папы
 };
 
 #endif // DOCKER_H

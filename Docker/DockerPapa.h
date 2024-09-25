@@ -15,6 +15,8 @@ public:
 private:
     void rodExtension();    // Фукнция выдвижения стрелы
     void rodRetraction();   // Фукнция возврата стрелы
+    void pullingUp();       // Функция стягивания дронов
+    void pushAway();        // Функция выдвижения стрелы, для расталкивания двух дронов
 };
 
 #endif // DOCKERPAPA_H
