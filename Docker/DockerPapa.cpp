@@ -29,6 +29,12 @@ void DockerPapa::undocking()
 
 }
 
+void DockerPapa::stop()
+{
+    servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
+    servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
+}
+
 void DockerPapa::rodExtension()
 {
     if (!digitalRead(PIN_ROD_EXTENTION)){

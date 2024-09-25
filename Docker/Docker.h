@@ -15,6 +15,7 @@ public:
 
     virtual void docking()      = 0;
     virtual void undocking()    = 0;
+    virtual void stop()         = 0;
 
 public:
     Servo_SPT5535LV360  servoRod;       // Серва штанги

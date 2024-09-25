@@ -52,10 +52,13 @@ int main(int argc, char *argv[])
     std::cout << "Docking begin" << std::endl;
 
     while (true) {
-        if (mavExchange.getStartPin())
+        if (mavExchange.getStartPin() == 1)
             docker->docking();
-        else
+        else if (mavExchange.getStartPin() == 0)
             docker->undocking();
+        else
+            docker->stop();
+
         exec_freq();
     }
     return 0;

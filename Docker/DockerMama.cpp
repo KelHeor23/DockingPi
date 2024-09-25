@@ -11,3 +11,8 @@ void DockerMama::undocking()
 {
 
 }
+
+void DockerMama::stop()
+{
+
+}

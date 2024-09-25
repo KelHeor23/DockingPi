@@ -19,7 +19,7 @@ public:
     bool getStartPin() const;
 
 private:
-    bool startPin = 0;
+    int startPin = 0;
 
     std::string serialAdress = "serial:///dev/serial0:115200";
 };
