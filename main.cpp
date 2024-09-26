@@ -69,10 +69,14 @@ int main(int argc, char *argv[])
     noecho();
     cbreak();
     keypad(stdscr, TRUE);
-    int key;
+    nodelay(stdscr, TRUE); // Устанавливаем неблокирующий режим ввода
+    int key, temp;
     while (true) {
         key = getch();
-        switch (key) {
+        if (key == '1' || key == '2' || key == '3')
+            temp = key;
+
+        switch (temp) {
         case '1':
             docker->docking();
             break;

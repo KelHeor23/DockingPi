@@ -9,7 +9,11 @@
 class Docker {
 public:
     Docker() : servoRod(PIN_ROD), servoCargo(PIN_CARGO),
-        servoRightHook(PIN_RIGHT_HOOK), servoLeftHook(PIN_LEFT_HOOK) {}
+        servoRightHook(PIN_RIGHT_HOOK), servoLeftHook(PIN_LEFT_HOOK) {
+        pinMode(PIN_ROD_EXTENTION, INPUT);
+        pinMode(PIN_ROD_RETRACTED, INPUT);
+        pinMode(PIN_DOCKING_COMPL, INPUT);
+    }
 
     virtual ~Docker(){}
 
