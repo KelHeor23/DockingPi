@@ -22,6 +22,7 @@ add_executable(DockingPi main.cpp
 find_library(WIRINGPI_LIBRARIES wiringPi)
 
 target_link_libraries(DockingPi
+    ncurses
     MAVSDK::mavsdk             #All apps link against mavsdk library
     ${WIRINGPI_LIBRARIES}
 )
