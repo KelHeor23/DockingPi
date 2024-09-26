@@ -1,10 +1,13 @@
 #ifndef DOCKER_H
 #define DOCKER_H
 
-#include "../Servo/Servo.h"
-
-#include "DockerPinout.h"
+#include <chrono>
 #include <string>
+
+#include "../Servo/Servo.h"
+#include "DockerPinout.h"
+
+using m_time = std::chrono::utc_clock;
 
 class Docker {
 public:
@@ -44,6 +47,10 @@ public:
     3 - телега покинула папу
     */
     std::string MSG_papa = "0000";         // Сообщение отправленное от папы
+
+    std::chrono::time_point<m_time> lastSwitchTime = m_time::now(); // Метка времени
+
+    int cargoAcceleration = 300;            // Промежуток увеличения скорости телеги
 };
 
 #endif // DOCKER_H

@@ -14,10 +14,12 @@ public:
     void stop() override;
 
 private:
-    void rodExtension();    // Фукнция выдвижения стрелы
-    void rodRetraction();   // Фукнция возврата стрелы
-    void pullingUp();       // Функция стягивания дронов
-    void pushAway();        // Функция выдвижения стрелы, для расталкивания двух дронов
+    void rodExtension();            // Фукнция выдвижения стрелы
+    void rodRetraction();           // Фукнция возврата стрелы
+    void pullingUp();               // Функция стягивания дронов
+    void pushAway();                // Функция выдвижения стрелы, для расталкивания двух дронов
+    void cargoTransfer();           // Функция передачи телеги
+    void cargoTransferEnding();     // Функция плавного завершения передачи телеги
 };
 
 #endif // DOCKERPAPA_H
