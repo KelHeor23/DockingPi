@@ -1,10 +1,12 @@
 #include <iostream>
 #include <thread>
 #include <unistd.h>
+#include <ncurses.h>
 
 #include "Docker/DockerFactory.h"
 #include "Mavlink/MavlinkExchange.h"
 
+#define JOYSTICK 0
 
 // Execution frequency
 void exec_freq(){
@@ -16,7 +18,6 @@ int main(int argc, char *argv[])
     DockerFactory factory;
     std::unique_ptr<Docker> docker;
 
-    MavlinkExchange mavExchange;
     /* Read params and running fabric*/
     //-----------------------------------------------------------------------------------------------
 
@@ -46,6 +47,8 @@ int main(int argc, char *argv[])
     }
     //-----------------------------------------------------------------------------------------------
 
+#if JOYSTICK
+    MavlinkExchange mavExchange;
     if (!mavExchange.init())
         return 0;
 
@@ -61,5 +64,29 @@ int main(int argc, char *argv[])
 
         exec_freq();
     }
+#else
+    initscr();
+    noecho();
+    cbreak();
+    keypad(stdscr, TRUE);
+    int key;
+    while (true) {
+        key = getch();
+        switch (key) {
+        case '1':
+            docker->docking();
+            break;
+        case '2':
+            docker->undocking();
+            break;
+        case '3':
+            docker->stop();
+            break;
+        }
+    }
+
+    endwin();
+#endif
+
     return 0;
 }
