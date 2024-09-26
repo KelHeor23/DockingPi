@@ -26,10 +26,13 @@ int MavlinkExchange::init()
         mavlink_rc_channels_t rc_channels;
         mavlink_msg_rc_channels_decode(&message, &rc_channels);
         if (rc_channels.chancount >= 8) {
+            std::cout << "8ch" << std::endl;
             if (rc_channels.chan8_raw > 1600)
-                startPin = true;
+                startPin = 1;
+            else if (rc_channels.chan8_raw > 1200)
+                startPin = 0;
             else
-                startPin = false;
+                startPin = -1;
         } else {
             std::cout << "RC Channel 8 is not available." << std::endl;
             return 0;

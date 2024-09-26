@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(DockingPi LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(MAVSDK REQUIRED)
@@ -22,6 +22,7 @@ add_executable(DockingPi main.cpp
 find_library(WIRINGPI_LIBRARIES wiringPi)
 
 target_link_libraries(DockingPi
+    ncurses
     MAVSDK::mavsdk             #All apps link against mavsdk library
     ${WIRINGPI_LIBRARIES}
 )

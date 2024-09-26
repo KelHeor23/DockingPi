@@ -11,6 +11,7 @@ public:
 
     void docking() override;
     void undocking() override;
+    void stop() override;
 
 };
 

@@ -1,10 +1,12 @@
 #include <iostream>
 #include <thread>
 #include <unistd.h>
+#include <ncurses.h>
 
 #include "Docker/DockerFactory.h"
 #include "Mavlink/MavlinkExchange.h"
 
+#define JOYSTICK 0
 
 // Execution frequency
 void exec_freq(){
@@ -16,7 +18,6 @@ int main(int argc, char *argv[])
     DockerFactory factory;
     std::unique_ptr<Docker> docker;
 
-    MavlinkExchange mavExchange;
     /* Read params and running fabric*/
     //-----------------------------------------------------------------------------------------------
 
@@ -46,17 +47,50 @@ int main(int argc, char *argv[])
     }
     //-----------------------------------------------------------------------------------------------
 
+#if JOYSTICK
+    MavlinkExchange mavExchange;
     if (!mavExchange.init())
         return 0;
 
     std::cout << "Docking begin" << std::endl;
 
     while (true) {
-        if (mavExchange.getStartPin())
+        if (mavExchange.getStartPin() == 1)
             docker->docking();
-        else
+        else if (mavExchange.getStartPin() == 0)
             docker->undocking();
+        else
+            docker->stop();
+
         exec_freq();
     }
+#else
+    initscr();
+    noecho();
+    cbreak();
+    keypad(stdscr, TRUE);
+    nodelay(stdscr, TRUE); // Устанавливаем неблокирующий режим ввода
+    int key, temp;
+    while (true) {
+        key = getch();
+        if (key == '1' || key == '2' || key == '3')
+            temp = key;
+
+        switch (temp) {
+        case '1':
+            docker->docking();
+            break;
+        case '2':
+            docker->undocking();
+            break;
+        case '3':
+            docker->stop();
+            break;
+        }
+    }
+
+    endwin();
+#endif
+
     return 0;
 }

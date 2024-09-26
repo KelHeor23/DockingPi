@@ -36,10 +36,15 @@ public:
     Servo_SPT5535LV360() = delete;
     Servo_SPT5535LV360(uint8_t pin);
 
-    void writePWM(PWM pwm);   // Установка ширины импульса для поворота сервопривода
+    void writePWM(PWM pwm);         // Установка ширины импульса для поворота сервопривода
+
+    void increaseSpeedCargoCV();    // Увеличение скорости вращения телеги по часовой стрелке
+    void decreaseSpeedCargoCV();    // Увеличение скорости вращения телеги против часовой стрелки
 
 private:
-    int m_pin = 0;                     // Пин которому присоединена серва
+    int m_pin = 0;                  // Пин которому присоединена серва
+
+    PWM currSpeed = STOP;           // Текущая скорость телеги
 };
 
 #endif // SERVO_SPT5535LV360_H
