@@ -29,6 +29,11 @@ void DockerMama::undocking()
         servoLeftHook.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
         servoRightHook.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
     }
+
+    if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
+        servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV10);
+    else
+        servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
 }
 
 void DockerMama::stop()
