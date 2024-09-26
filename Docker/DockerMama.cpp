@@ -2,6 +2,8 @@
 
 DockerMama::DockerMama() {
     MSG_papa = "1111";         // Сообщение отправленное от папы
+    servoLeftHook.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
+    servoRightHook.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
 }
 
 void DockerMama::docking()
