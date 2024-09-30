@@ -13,6 +13,8 @@ constexpr uint8_t PIN_ROD_RETRACTED     = 13;
 constexpr uint8_t PIN_DOCKING_COMPL     = 14;
 constexpr uint8_t PIN_CARGO_ON_BORDER   = 21;
 constexpr uint8_t PIN_CARGO_AT_HOME     = 22;
+constexpr uint8_t PIN_LEFT_HOOK_ACTIVE  = 23;
+constexpr uint8_t PIN_RIGHT_HOOK_ACTIVE = 24;
 
 
 #endif // DOCKERPINOUT_H
