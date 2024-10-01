@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <iostream>
 
 #include "DockerPapa.h"
 
@@ -27,6 +28,7 @@ void DockerPapa::docking()
 void DockerPapa::undocking()
 {
     MSG_papa[0] = '0';
+    first = true;
 
     if (MSG_papa[1] == '0'){
         stop();
@@ -67,7 +69,7 @@ void DockerPapa::rodRetraction()
 {
     if (digitalRead(PIN_ROD_RETRACTED) == LOW){
         servoRod.writePWM(Servo_SPT5535LV360::PWM::CCV10);
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV2);
+        servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV1);
     } else {
         printw("done rodRetraction\n");
         servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
@@ -78,12 +80,14 @@ void DockerPapa::rodRetraction()
 
 void DockerPapa::pullingUp()
 {
-    if (digitalRead(PIN_DOCKING_COMPL) == LOW){
-        servoRod.writePWM(Servo_SPT5535LV360::PWM::CCV5);
-    } else {
+    if (digitalRead(PIN_DOCKING_COMPL) == HIGH){
         servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
         printw("done pullingUp\n");
         MSG_papa[2] = '1';
+    } else if (digitalRead(PIN_ROD_RETRACTED) == HIGH){
+        undocking();
+    } else {
+        servoRod.writePWM(Servo_SPT5535LV360::PWM::CCV5);
     }
 }
 
@@ -100,12 +104,17 @@ void DockerPapa::pushAway()
 
 void DockerPapa::cargoTransfer()
 {
+    if (first){
+        servoCargo.writePWM(Servo_SPT5535LV360::PWM::NEUTRAL); // Колхоз, нужен для перебора enum
+        first = false;
+    }
+
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
     if (elapsedTime >= cargoAcceleration){
         servoCargo.increaseSpeedCargoCV();
         lastSwitchTime = m_time::now();
     }
-    if (digitalRead(PIN_CARGO_ON_BORDER) == LOW){
+    if (digitalRead(PIN_CARGO_ON_BORDER) == LOW && digitalRead(PIN_CARGO_AT_HOME) == LOW){
         MSG_papa[3] = '1';
         printw("done cargoTransfer\n");
     }
@@ -115,6 +124,7 @@ void DockerPapa::cargoTransferEnding()
 {
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
     if (elapsedTime >= cargoAcceleration){
+        std::cout << "cargoTransferEnding" << std::endl;
         servoCargo.decreaseSpeedCargoCV();
         lastSwitchTime = m_time::now();
     }

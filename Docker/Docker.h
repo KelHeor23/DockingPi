@@ -24,6 +24,14 @@ public:
     virtual void undocking()    = 0;
     virtual void stop()         = 0;
 
+    void cargoCV(){
+        servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV2);
+    }
+    
+    void cargoCCV(){
+        servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV3);
+    }
+
 public:
     Servo_SPT5535LV360  servoRod;       // Серва штанги
     Servo_SPT5535LV360  servoCargo;     // Серва телеги
@@ -51,6 +59,10 @@ public:
     std::chrono::time_point<m_time> lastSwitchTime = m_time::now(); // Метка времени
 
     int cargoAcceleration = 300;            // Промежуток увеличения скорости телеги
+
+    bool first = true;                      // Флаг первого запуска
+    bool llock = false;                     // Флаг закрытия левого крюка
+    bool rlock = false;                     // Флаг закрытия правого крюка
 };
 
 #endif // DOCKER_H

@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     int key, temp;
     while (true) {
         key = getch();
-        if (key == '1' || key == '2' || key == '3')
+        if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5')
             temp = key;
 
         switch (temp) {
@@ -86,7 +86,13 @@ int main(int argc, char *argv[])
         case '3':
             docker->stop();
             break;
-        }
+        case '4':
+            docker->cargoCV();
+            break;
+        case '5':
+            docker->cargoCCV();
+            break;
+        } 
     }
 
     endwin();
