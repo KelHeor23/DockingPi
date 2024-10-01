@@ -9,9 +9,9 @@ public:
     DockerMama();
     ~DockerMama(){}
 
-    void docking() override;
-    void undocking() override;
-    void stop() override;
+    void docking()      override;
+    void undocking()    override;
+    void stop()         override;
 
 private:
     void lockingHooks();            // Функция закрытия крюков
