@@ -51,6 +51,7 @@ public:
     std::chrono::time_point<m_time> lastSwitchTime = m_time::now(); // Метка времени
 
     int cargoAcceleration = 300;            // Промежуток увеличения скорости телеги
+    bool first = true;                      // Флаг первого запуска
 };
 
 #endif // DOCKER_H
