@@ -43,7 +43,7 @@ int MavlinkExchange::init()
     return 1;
 }
 
-bool MavlinkExchange::getStartPin() const
+int MavlinkExchange::getStartPin() const
 {
     return startPin;
 }

@@ -1,25 +1,71 @@
+/*!
+    \file
+    \brief Класс описывающий модуль стыковки для устройства Papa
+    \author Князев А.И
+*/
 #ifndef DOCKERPAPA_H
 #define DOCKERPAPA_H
 
 #include "Docker.h"
 
+/*!
+    \brief Класс описывающий модуль стыковки для устройства Papa
+*/
 class DockerPapa : public Docker
 {
 public:
+    /*!
+        \brief Конструктор объекта. Ничего не делает
+    */
     DockerPapa();
     ~DockerPapa(){}
 
+    /*!
+        \brief Функция работы модуля стыковки. Запускаемая в бесконечном цикле.
+    */
     void docking() override;
+
+    /*!
+        \brief Функция расстыковки. Запускаемая в бесконечном цикле.
+    */
     void undocking() override;
+
+    /*!
+        \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
+    */
     void stop() override;
 
 private:
-    void rodExtension();            // Фукнция выдвижения стрелы
-    void rodRetraction();           // Фукнция возврата стрелы
-    void pullingUp();               // Функция стягивания дронов
-    void pushAway();                // Функция выдвижения стрелы, для расталкивания двух дронов
-    void cargoTransfer();           // Функция передачи телеги
-    void cargoTransferEnding();     // Функция плавного завершения передачи телеги
+
+    /*!
+        \brief Фукнция выдвижения стрелы
+    */
+    void rodExtension();
+
+    /*!
+        \brief Фукнция возврата стрелы
+    */
+    void rodRetraction();
+
+    /*!
+        \brief Функция стягивания дронов
+    */
+    void pullingUp();
+
+    /*!
+        \brief Функция выдвижения стрелы, для расталкивания двух дронов
+    */
+    void pushAway();
+
+    /*!
+        \brief Функция передачи телеги
+    */
+    void cargoTransfer();
+
+    /*!
+        \brief Функция плавного завершения передачи телеги
+    */
+    void cargoTransferEnding();
 };
 
 #endif // DOCKERPAPA_H

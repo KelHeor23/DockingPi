@@ -1,3 +1,9 @@
+/*!
+    \file
+    \brief Абстрактный класс описывающий поведение модулей стыковки
+    \author Князев А.И
+*/
+
 #ifndef DOCKER_H
 #define DOCKER_H
 
@@ -9,8 +15,16 @@
 
 using m_time = std::chrono::system_clock;
 
+/*!
+    \brief Абстрактный класс описывающий поведение модулей стыковки
+*/
 class Docker {
 public:
+
+    /*!
+        \brief Конструктор создания модуля стыковки.
+        Создает экземпляр модуля стыковки, инициализирует пины и сервы
+    */
     Docker() : servoRod(PIN_ROD), servoCargo(PIN_CARGO),
         servoRightHook(PIN_RIGHT_HOOK), servoLeftHook(PIN_LEFT_HOOK) {
         pinMode(PIN_ROD_EXTENTION, INPUT);
@@ -20,49 +34,79 @@ public:
 
     virtual ~Docker(){}
 
+    /*!
+        \brief Функция работы модуля стыковки. Запускаемая в бесконечном цикле.
+    */
     virtual void docking()      = 0;
+
+    /*!
+        \brief Функция расстыковки. Запускаемая в бесконечном цикле.
+    */
     virtual void undocking()    = 0;
+
+    /*!
+        \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
+    */
     virtual void stop()         = 0;
 
+    /*!
+        \brief Функция вращения сервы для движения телеги по часовой стрелке
+    */
     void cargoCV(){
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV2);
     }
     
+    /*!
+        \brief Функция вращения сервы для движения телеги против часовой стрелки
+    */
     void cargoCCV(){
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV3);
     }
 
 public:
-    Servo_SPT5535LV360  servoRod;       // Серва штанги
-    Servo_SPT5535LV360  servoCargo;     // Серва телеги
-    Servo_DS3235_270    servoRightHook; // Серва правого крюка
-    Servo_DS3235_270    servoLeftHook;  // Серва левого крюка
+    /// Серва штанги
+    Servo_SPT5535LV360  servoRod;
+    /// Серва телеги
+    Servo_SPT5535LV360  servoCargo;
+    /// Серва правого крюка
+    Servo_DS3235_270    servoRightHook;
+    /// Серва левого крюка
+    Servo_DS3235_270    servoLeftHook;
 
 public:
-    /*
-    MSG_mama
+    /*!
+    \brief Сообщение отправленное от мамы.
+    Байты:
     0 - готовность
     1 - хуки закрылись
     2 - телега пришла к маме
     */
-    std::string MSG_mama = "000";          // Сообщение отправленное от мамы
+    std::string MSG_mama = "000";
 
-    /*
-    MSG_papa
+    /*!
+    \brief Сообщение отправленное от папы
+    Байты:
     0 - готовность
     1 - стрела выдвинулась
     2 - дроны стянулись
     3 - телега покинула папу
     */
-    std::string MSG_papa = "0000";         // Сообщение отправленное от папы
+    std::string MSG_papa = "0000";
 
-    std::chrono::time_point<m_time> lastSwitchTime = m_time::now(); // Метка времени
+    /// Метка времени
+    std::chrono::time_point<m_time> lastSwitchTime = m_time::now();
 
-    int cargoAcceleration = 300;            // Промежуток увеличения скорости телеги
+    /// Промежуток увеличения скорости телеги. мс.
+    int cargoAcceleration = 300;
 
-    bool first = true;                      // Флаг первого запуска
-    bool llock = false;                     // Флаг закрытия левого крюка
-    bool rlock = false;                     // Флаг закрытия правого крюка
+    /// Флаг первого запуска
+    bool first = true;
+
+    /// Флаг закрытия левого крюка
+    bool llock = false;
+
+    /// Флаг закрытия правого крюка
+    bool rlock = false;
 };
 
 #endif // DOCKER_H

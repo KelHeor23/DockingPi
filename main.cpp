@@ -1,22 +1,37 @@
+/*!
+    \file
+    \brief Базовый файл main.
+    \author Князев А.И
+*/
+
 #include <iostream>
 #include <thread>
 #include <unistd.h>
+
 #include <ncurses.h>
 
 #include "Docker/DockerFactory.h"
 #include "Mavlink/MavlinkExchange.h"
 
-#define JOYSTICK 0
+#define JOYSTICK 0 ///< Макрос указывающий что запуск производится с ипользованием джостика
 
-// Execution frequency
+/*!
+    Функция задающая задержку в миллисекундах для каждой иттерации работы docking
+*/
 void exec_freq(){
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
 
+/*!
+    \brief  Для запуска программы ожидается передача первым аргументом указания для какого устрйоства будет она скомпилирована (Mama или Papa).
+    \param[in] argc количество аргументов командной строки, переданных программе, включая название самой программы.
+    \param[in] pin  представляет собой массив строк (char*), 0 аргумент - имя программы, 1 - режим запуска (Mama или Papa)
+    \return Код завершения программы.
+*/
 int main(int argc, char *argv[])
 {
-    DockerFactory factory;
-    std::unique_ptr<Docker> docker;
+    DockerFactory factory;          ///> factory - Фабрика модулей стыковки
+    std::unique_ptr<Docker> docker; ///> docker - Непосредсвтенный механизм стыковки
 
     /* Read params and running fabric*/
     //-----------------------------------------------------------------------------------------------
