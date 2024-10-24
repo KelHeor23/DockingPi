@@ -7,7 +7,7 @@ Server::~Server()
 
 }
 
-void Server::send(std::string msg)
+void Server::sendMsg(std::string msg)
 {
 
 }

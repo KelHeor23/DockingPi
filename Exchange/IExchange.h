@@ -13,7 +13,7 @@ class IExchange {
     /*!
         \brief Функция отправки сообщения
     */
-    virtual void send(std::string msg) = 0;
+    virtual void sendMsg(std::string msg) = 0;
 
     /*!
         \brief Функция чтения сообщения

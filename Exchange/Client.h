@@ -20,7 +20,7 @@ public:
     Client(std::string address, std::size_t port);
     ~Client();
 
-    void send(std::string msg)  override;
+    void sendMsg(std::string msg)  override;
     std::string read()          override;
 
 private:
