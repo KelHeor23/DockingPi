@@ -17,6 +17,11 @@ add_executable(DockingPi main.cpp
     Docker/DockerFactory.h
     Docker/DockerPinout.h
     Mavlink/MavlinkExchange.h Mavlink/MavlinkExchange.cpp
+
+    Exchange/Client.h Exchange/Client.cpp
+    Exchange/Server.h Exchange/Server.cpp
+    Exchange/Config.h
+    Exchange/IExchange.h
 )
 
 find_library(WIRINGPI_LIBRARIES wiringPi)
