@@ -12,7 +12,7 @@ void Server::send(std::string msg)
 
 }
 
-void Server::read()
+std::string Server::read()
 {
 
 }

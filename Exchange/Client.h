@@ -7,6 +7,11 @@
 #define CLIENT_H
 
 #include "IExchange.h"
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <cstring>
 
 class Client    : public IExchange
 {
@@ -15,8 +20,12 @@ public:
     Client(std::string address, std::size_t port);
     ~Client();
 
-    void send(std::string msg)     override;
-    void read()     override;
+    void send(std::string msg)  override;
+    std::string read()          override;
+
+private:
+    int clientSocket = 0;
+    struct sockaddr_in serverAddr;
 };
 
 #endif // CLIENT_H

@@ -14,8 +14,8 @@ public:
     Server(std::string address, std::size_t port);
     ~Server();
 
-    void send(std::string msg)     override;
-    void read()     override;
+    void send(std::string msg)  override;
+    std::string read()          override;
 };
 
 #endif // SERVER_H

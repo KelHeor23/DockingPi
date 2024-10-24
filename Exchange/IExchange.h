@@ -18,7 +18,7 @@ class IExchange {
     /*!
         \brief Функция чтения сообщения
     */
-    virtual void read() = 0;
+    virtual std::string read() = 0;
 };
 
 #endif // IEXCHANGE_H

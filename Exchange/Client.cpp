@@ -12,7 +12,7 @@ void Client::send(std::string msg)
 
 }
 
-void Client::read()
+std::string Client::read()
 {
 
 }
