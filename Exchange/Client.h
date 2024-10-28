@@ -16,16 +16,17 @@
 class Client    : public IExchange
 {
 public:
-    Client() = delete;
-    Client(std::string address, std::size_t port);
+    Client();
     ~Client();
 
-    void sendMsg(std::string msg)  override;
-    std::string read()          override;
+    void sendMsg(std::string msg)   override;
+    std::string read()              override;
+    bool connect(std::string address, std::size_t port) override;
 
 private:
     int clientSocket = 0;
     struct sockaddr_in serverAddr;
+    size_t bufferSize = 16;
 };
 
 #endif // CLIENT_H

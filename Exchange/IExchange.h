@@ -19,6 +19,11 @@ class IExchange {
         \brief Функция чтения сообщения
     */
     virtual std::string read() = 0;
+
+    /*!
+        \brief Функция устанавливающая соединения
+    */
+    virtual bool connect(std::string address, std::size_t port) = 0;
 };
 
 #endif // IEXCHANGE_H

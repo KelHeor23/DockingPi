@@ -1,13 +1,8 @@
 #include "Client.h"
 
-Client::Client(std::string address, std::size_t port) {
-    clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+Client::Client()
+{
 
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(port);
-    serverAddr.sin_addr.s_addr = inet_addr(address.c_str());
-
-    connect(clientSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
 }
 
 Client::~Client()
@@ -22,7 +17,23 @@ void Client::sendMsg(std::string msg)
 
 std::string Client::read()
 {
-    char buffer[16];
-    recv(clientSocket, buffer, sizeof(buffer), 0);
-    return std::string(buffer);
+    std::string buffer;
+    buffer.resize(bufferSize);
+    ::read(clientSocket, buffer.data(), bufferSize);
+    return buffer;
+}
+
+bool Client::connect(std::string address, std::size_t port)
+{
+    if ((clientSocket = socket(AF_INET, SOCK_STREAM, 0)) == 0){
+        throw("Error creating client socket");
+    }
+
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(port);
+    serverAddr.sin_addr.s_addr = inet_addr(address.c_str());
+
+    if (::connect(clientSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) == 0){
+        throw("Error connect client socket to server");
+    }
 }

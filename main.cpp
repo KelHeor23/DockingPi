@@ -11,7 +11,6 @@
 #include <ncurses.h>
 
 #include "Docker/DockerFactory.h"
-#include "Mavlink/MavlinkExchange.h"
 
 #define JOYSTICK 0 ///< Макрос указывающий что запуск производится с ипользованием джостика
 
