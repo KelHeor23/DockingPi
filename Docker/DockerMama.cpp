@@ -46,6 +46,13 @@ void DockerMama::stop()
     servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
 }
 
+void DockerMama::connect()
+{
+    std::string address = "10.42.0.1";
+    std::size_t port    = 8000;
+    server.connect(address, port);
+}
+
 void DockerMama::lockingHooks()
 { 
     if (digitalRead(PIN_LEFT_HOOK_ACTIVE) == HIGH) {

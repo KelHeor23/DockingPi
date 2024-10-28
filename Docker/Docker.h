@@ -50,6 +50,11 @@ public:
     virtual void stop()         = 0;
 
     /*!
+        \brief Функция вызывающая connect в механизме обмена
+    */
+    virtual void connect()         = 0;
+
+    /*!
         \brief Функция вращения сервы для движения телеги по часовой стрелке
     */
     void cargoCV(){

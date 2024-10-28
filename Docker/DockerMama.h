@@ -8,6 +8,8 @@
 
 #include "Docker.h"
 
+#include "../Exchange/Server.h"
+
 /*!
     \brief Класс описывающий модуль стыковки для устроЙства Mama
 */
@@ -35,6 +37,11 @@ public:
     */
     void stop()         override;
 
+    /*!
+        \brief Функция прокидывающая вызывающая connect в server
+    */
+    void connect()      override;
+
 private:
 
     /**
@@ -44,13 +51,16 @@ private:
 
     /*!
         \brief Функция плавного старта/подготовки к приему телеги
-    */
+    */;
     void cargoTransferBegin();
 
     /*!
         \brief Функция плавного завершения приёма телеги
     */
     void cargoTransferEnding();
+
+private:
+    Server server;
 };
 
 #endif // DOCKERMAMA_H

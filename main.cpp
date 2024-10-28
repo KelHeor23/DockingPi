@@ -61,6 +61,12 @@ int main(int argc, char *argv[])
     }
     //-----------------------------------------------------------------------------------------------
 
+    try {
+        docker->connect();
+    } catch (const char* msg) {
+        std::cout << msg << std::endl;
+    }
+
 #if JOYSTICK
     MavlinkExchange mavExchange;
     if (!mavExchange.init())

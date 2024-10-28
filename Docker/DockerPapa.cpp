@@ -52,6 +52,13 @@ void DockerPapa::stop()
     servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
 }
 
+void DockerPapa::connect()
+{
+    std::string address = "10.42.0.1";
+    std::size_t port    = 8000;
+    client.connect(address, port);
+}
+
 void DockerPapa::rodExtension()
 {
     if (digitalRead(PIN_ROD_EXTENTION) == LOW){
