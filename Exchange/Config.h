@@ -8,7 +8,7 @@
 
 #include <string>
 
-std::string address = "10.42.0.1";
-std::size_t port    = 8000;
+extern std::string address_g;
+extern std::size_t port_g;
 
 #endif // CONFIG_H

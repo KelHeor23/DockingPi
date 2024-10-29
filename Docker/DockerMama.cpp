@@ -49,9 +49,7 @@ void DockerMama::stop()
 
 void DockerMama::connect()
 {
-    std::string address = "10.42.0.1";
-    std::size_t port    = 8000;
-    server.connect(address, port);
+    server.connect(address_g, port_g);
 
     std::cout << "Connection complite!" << std::endl;
 

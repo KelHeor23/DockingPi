@@ -11,6 +11,7 @@
 #include <string>
 
 #include "../Servo/Servo.h"
+#include "../Exchange/Config.h"
 #include "DockerPinout.h"
 
 using m_time = std::chrono::system_clock;

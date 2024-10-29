@@ -22,6 +22,7 @@ add_executable(DockingPi main.cpp
     Exchange/Server.h Exchange/Server.cpp
     Exchange/Config.h
     Exchange/IExchange.h
+    Exchange/Config.cpp
 )
 
 find_library(WIRINGPI_LIBRARIES wiringPi)

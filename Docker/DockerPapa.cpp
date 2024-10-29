@@ -54,9 +54,7 @@ void DockerPapa::stop()
 
 void DockerPapa::connect()
 {
-    std::string address = "10.42.0.1";
-    std::size_t port    = 8000;
-    client.connect(address, port);
+    client.connect(address_g, port_g);
 
     std::cout << "Connection complite!" << std::endl;
 
