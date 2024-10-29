@@ -1,4 +1,5 @@
 #include "DockerMama.h"
+#include <iostream>
 
 DockerMama::DockerMama() {
     servoLeftHook.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
@@ -51,6 +52,10 @@ void DockerMama::connect()
     std::string address = "10.42.0.1";
     std::size_t port    = 8000;
     server.connect(address, port);
+
+    std::cout << "Connection complite!" << std::endl;
+
+    server.sendMsg("server");
 }
 
 void DockerMama::lockingHooks()

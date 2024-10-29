@@ -57,6 +57,10 @@ void DockerPapa::connect()
     std::string address = "10.42.0.1";
     std::size_t port    = 8000;
     client.connect(address, port);
+
+    std::cout << "Connection complite!" << std::endl;
+
+    client.sendMsg("client");
 }
 
 void DockerPapa::rodExtension()
