@@ -113,6 +113,8 @@ public:
 
     /// Флаг закрытия правого крюка
     bool rlock = false;
+
+    std::string buffer;
 };
 
 #endif // DOCKER_H

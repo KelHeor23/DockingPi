@@ -8,6 +8,13 @@ DockerMama::DockerMama() {
 
 void DockerMama::docking()
 {
+    buffer = server.read();
+
+    if (buffer != ""){
+        MSG_papa = buffer;
+        std::cout << MSG_papa << std::endl;
+    }
+
     MSG_mama[0] = '1';
     if (MSG_papa[0] == '1'){
         if (MSG_mama[1] == '0'){    // Закрываем крюки
@@ -22,6 +29,7 @@ void DockerMama::docking()
     } else {
         undocking();
     }
+    server.sendMsg(MSG_mama);
 }
 
 void DockerMama::undocking()
@@ -52,8 +60,6 @@ void DockerMama::connect()
     server.connect(address_g, port_g);
 
     std::cout << "Connection complite!" << std::endl;
-
-    server.sendMsg("server");
 }
 
 void DockerMama::lockingHooks()

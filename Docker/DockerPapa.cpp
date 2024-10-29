@@ -7,6 +7,13 @@ DockerPapa::DockerPapa() {}
 
 void DockerPapa::docking()
 {
+    buffer = client.read();
+
+    if (buffer != ""){
+        MSG_mama = buffer;
+        std::cout << MSG_mama << std::endl;
+    }
+
     MSG_papa[0] = '1';
     if (MSG_mama[0] == '1'){
         if (MSG_papa[1] == '0')
@@ -23,6 +30,7 @@ void DockerPapa::docking()
     } else {
         undocking();
     }
+    client.sendMsg(MSG_papa);
 }
 
 void DockerPapa::undocking()
@@ -57,8 +65,6 @@ void DockerPapa::connect()
     client.connect(address_g, port_g);
 
     std::cout << "Connection complite!" << std::endl;
-
-    client.sendMsg("client");
 }
 
 void DockerPapa::rodExtension()
