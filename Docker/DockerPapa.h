@@ -8,6 +8,8 @@
 
 #include "Docker.h"
 
+#include "../Exchange/Client.h"
+
 /*!
     \brief Класс описывающий модуль стыковки для устройства Papa
 */
@@ -34,6 +36,11 @@ public:
         \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
     */
     void stop() override;
+
+    /*!
+        \brief Функция прокидывающая вызывающая connect в client
+    */
+    void connect()      override;
 
 private:
 
@@ -66,6 +73,9 @@ private:
         \brief Функция плавного завершения передачи телеги
     */
     void cargoTransferEnding();
+
+private:
+    Client client;
 };
 
 #endif // DOCKERPAPA_H

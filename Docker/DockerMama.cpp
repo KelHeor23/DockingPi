@@ -1,4 +1,5 @@
 #include "DockerMama.h"
+#include <iostream>
 
 DockerMama::DockerMama() {
     servoLeftHook.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
@@ -7,6 +8,13 @@ DockerMama::DockerMama() {
 
 void DockerMama::docking()
 {
+    buffer = server.read();
+
+    if (buffer != ""){
+        MSG_papa = buffer;
+        std::cout << MSG_papa << std::endl;
+    }
+
     MSG_mama[0] = '1';
     if (MSG_papa[0] == '1'){
         if (MSG_mama[1] == '0'){    // Закрываем крюки
@@ -21,6 +29,7 @@ void DockerMama::docking()
     } else {
         undocking();
     }
+    server.sendMsg(MSG_mama);
 }
 
 void DockerMama::undocking()
@@ -44,6 +53,13 @@ void DockerMama::stop()
 {
     servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
     servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
+}
+
+void DockerMama::connect()
+{
+    server.connect(address_g, port_g);
+
+    std::cout << "Connection complite!" << std::endl;
 }
 
 void DockerMama::lockingHooks()

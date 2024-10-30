@@ -11,7 +11,6 @@
 #include <ncurses.h>
 
 #include "Docker/DockerFactory.h"
-#include "Mavlink/MavlinkExchange.h"
 
 #define JOYSTICK 0 ///< Макрос указывающий что запуск производится с ипользованием джостика
 
@@ -61,6 +60,12 @@ int main(int argc, char *argv[])
         std::cout << "The program is running for type" << type << std::endl;
     }
     //-----------------------------------------------------------------------------------------------
+
+    try {
+        docker->connect();
+    } catch (const char* msg) {
+        std::cout << msg << std::endl;
+    }
 
 #if JOYSTICK
     MavlinkExchange mavExchange;

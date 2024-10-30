@@ -11,6 +11,7 @@
 #include <string>
 
 #include "../Servo/Servo.h"
+#include "../Exchange/Config.h"
 #include "DockerPinout.h"
 
 using m_time = std::chrono::system_clock;
@@ -48,6 +49,11 @@ public:
         \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
     */
     virtual void stop()         = 0;
+
+    /*!
+        \brief Функция вызывающая connect в механизме обмена
+    */
+    virtual void connect()         = 0;
 
     /*!
         \brief Функция вращения сервы для движения телеги по часовой стрелке
@@ -107,6 +113,8 @@ public:
 
     /// Флаг закрытия правого крюка
     bool rlock = false;
+
+    std::string buffer;
 };
 
 #endif // DOCKER_H
