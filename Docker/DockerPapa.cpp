@@ -14,6 +14,7 @@ void DockerPapa::docking()
         std::cout << MSG_mama << std::endl;
     }
 
+    MSG_mama[0] = '1';
     MSG_papa[0] = '1';
     if (MSG_mama[0] == '1'){
         if (MSG_papa[1] == '0')
