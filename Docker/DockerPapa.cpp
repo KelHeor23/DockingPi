@@ -7,7 +7,7 @@ DockerPapa::DockerPapa() {}
 
 void DockerPapa::docking()
 {
-    buffer = client.read();
+    //buffer = client.read();
 
     if (buffer != ""){
         MSG_mama = buffer;
@@ -31,7 +31,7 @@ void DockerPapa::docking()
     } else {
         undocking();
     }
-    client.sendMsg(MSG_papa);
+    //client.sendMsg(MSG_papa);
 }
 
 void DockerPapa::undocking()
@@ -49,7 +49,7 @@ void DockerPapa::undocking()
     } else if (MSG_papa[1] == '1')  // А затем, убираем стрелу
         rodRetraction();
 
-    if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
+    if (analogRead(PIN_CARGO_ON_BORDER) == HIGH && analogRead(PIN_CARGO_AT_HOME) == LOW)
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV10);
     else
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
@@ -70,7 +70,7 @@ void DockerPapa::connect()
 
 void DockerPapa::rodExtension()
 {
-    if (digitalRead(PIN_ROD_EXTENTION) == LOW){
+    if (analogRead(PIN_ROD_EXTENTION) == LOW){
         servoRod.writePWM(Servo_SPT5535LV360::PWM::CV10);
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV2);
     } else {
@@ -83,7 +83,7 @@ void DockerPapa::rodExtension()
 
 void DockerPapa::rodRetraction()
 {
-    if (digitalRead(PIN_ROD_RETRACTED) == LOW){
+    if (analogRead(PIN_ROD_RETRACTED) == LOW){
         servoRod.writePWM(Servo_SPT5535LV360::PWM::CCV10);
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV1);
     } else {
@@ -96,11 +96,11 @@ void DockerPapa::rodRetraction()
 
 void DockerPapa::pullingUp()
 {
-    if (digitalRead(PIN_DOCKING_COMPL) == HIGH){
+    if (analogRead(PIN_DOCKING_COMPL) == HIGH){
         servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
         printw("done pullingUp\n");
         MSG_papa[2] = '1';
-    } else if (digitalRead(PIN_ROD_RETRACTED) == HIGH){
+    } else if (analogRead(PIN_ROD_RETRACTED) == HIGH){
         undocking();
     } else {
         servoRod.writePWM(Servo_SPT5535LV360::PWM::CCV5);
@@ -109,7 +109,7 @@ void DockerPapa::pullingUp()
 
 void DockerPapa::pushAway()
 {
-    if (digitalRead(PIN_DOCKING_COMPL) == HIGH){
+    if (analogRead(PIN_DOCKING_COMPL) == HIGH){
         servoRod.writePWM(Servo_SPT5535LV360::PWM::CV5);
     } else {
         printw("done pushAway\n");
@@ -130,7 +130,7 @@ void DockerPapa::cargoTransfer()
         servoCargo.increaseSpeedCargoCV();
         lastSwitchTime = m_time::now();
     }
-    if (digitalRead(PIN_CARGO_ON_BORDER) == LOW && digitalRead(PIN_CARGO_AT_HOME) == LOW){
+    if (analogRead(PIN_CARGO_ON_BORDER) == LOW && analogRead(PIN_CARGO_AT_HOME) == LOW){
         MSG_papa[3] = '1';
         printw("done cargoTransfer\n");
     }
