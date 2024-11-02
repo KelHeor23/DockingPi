@@ -7,7 +7,7 @@ DockerMama::DockerMama() {
 }
 
 void DockerMama::docking()
-{
+{    
     buffer = server.read();
 
     if (buffer != ""){
@@ -19,6 +19,7 @@ void DockerMama::docking()
     if (MSG_papa[0] == '1'){
         if (MSG_mama[1] == '0'){    // Закрываем крюки
             lockingHooks();
+            cargoUnLock();          // Готовимся принимать телегу
         } else if (MSG_papa[2] == '1' && MSG_papa[3] == '0'){  // Стыковка закончилась, готовлю серво
             cargoTransferBegin();
         } else if (MSG_papa[3] == '1' && MSG_mama[2] == '0'){   // Папа передал телегу, останавливаю ее
@@ -45,14 +46,17 @@ void DockerMama::undocking()
 
     if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV10);
-    else
+    else {
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
+        cargoLock();
+    }
 }
 
 void DockerMama::stop()
 {
     servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
     servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
+    cargoLock();    // Телега встала. Закрываю замок
 }
 
 void DockerMama::connect()
