@@ -27,7 +27,8 @@ public:
         Создает экземпляр модуля стыковки, инициализирует пины и сервы
     */
     Docker() : servoRod(PIN_ROD), servoCargo(PIN_CARGO),
-        servoRightHook(PIN_RIGHT_HOOK), servoLeftHook(PIN_LEFT_HOOK) {
+        servoRightHook(PIN_RIGHT_HOOK), servoLeftHook(PIN_LEFT_HOOK),
+        servoCargoLock(PIN_CARGO_LOCK) {
         pinMode(PIN_ROD_EXTENTION, INPUT);
         pinMode(PIN_ROD_RETRACTED, INPUT);
         pinMode(PIN_DOCKING_COMPL, INPUT);
@@ -69,6 +70,20 @@ public:
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV3);
     }
 
+    /*!
+        \brief Функция закрытия замка движения телеги
+    */
+    void cargoLock(){
+        servoCargoLock.writePWM(Servo_DS3235_270::PWM::CCV4);
+    }
+
+    /*!
+        \brief Функция открытия замка движения телеги
+    */
+    void cargoUnLock(){
+        servoCargoLock.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
+    }
+
 public:
     /// Серва штанги
     Servo_SPT5535LV360  servoRod;
@@ -78,6 +93,8 @@ public:
     Servo_DS3235_270    servoRightHook;
     /// Серва левого крюка
     Servo_DS3235_270    servoLeftHook;
+    /// Серва замка тележки
+    Servo_DS3235_270    servoCargoLock;
 
 public:
     /*!

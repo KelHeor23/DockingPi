@@ -7,7 +7,7 @@ DockerPapa::DockerPapa() {}
 
 void DockerPapa::docking()
 {
-    buffer = client.read();
+    //buffer = client.read();
 
     if (buffer != ""){
         MSG_mama = buffer;
@@ -21,6 +21,7 @@ void DockerPapa::docking()
         else if (MSG_mama[1] == '1' && MSG_papa[2] == '0'){
             pullingUp();
         } else if (MSG_papa[2] == '1' && MSG_papa[3] == '0') {
+            cargoUnLock();
             cargoTransfer();
         } else if (MSG_papa[3] == '1' && MSG_mama[1] == '0') {
             cargoTransferEnding();
@@ -30,7 +31,9 @@ void DockerPapa::docking()
     } else {
         undocking();
     }
-    client.sendMsg(MSG_papa);
+    //client.sendMsg(MSG_papa);
+
+    servoCargoLock.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
 }
 
 void DockerPapa::undocking()
@@ -50,8 +53,10 @@ void DockerPapa::undocking()
 
     if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV10);
-    else
+    else {
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
+        cargoUnLock();
+    }
 }
 
 void DockerPapa::stop()
