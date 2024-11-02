@@ -74,14 +74,14 @@ public:
         \brief Функция закрытия замка движения телеги
     */
     void cargoLock(){
-        servoCargoLock.writePWM(Servo_DS3235_270::PWM::CCV4);
+        servoCargoLock.writePWM(Servo_DS3235_270::PWM::CV5);
     }
 
     /*!
         \brief Функция открытия замка движения телеги
     */
     void cargoUnLock(){
-        servoCargoLock.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
+        servoCargoLock.writePWM(Servo_DS3235_270::PWM::CCV5);
     }
 
 public:
