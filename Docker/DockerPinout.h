@@ -32,6 +32,8 @@ constexpr uint8_t PIN_CARGO_AT_HOME     = 21;
 constexpr uint8_t PIN_LEFT_HOOK_ACTIVE  = 23;
 /// Пин правый крюк активирован
 constexpr uint8_t PIN_RIGHT_HOOK_ACTIVE = 24;
+/// Пин замок тележки
+constexpr uint8_t PIN_CARGO_LOCK        = 14;
 
 
 #endif // DOCKERPINOUT_H
