@@ -21,7 +21,7 @@ void DockerPapa::docking()
             rodExtension();
         else if (MSG_mama[1] == '1' && MSG_papa[2] == '0'){
             pullingUp();
-        } else if (MSG_papa[2] == '1' && MSG_papa[3] == '0') {
+        } else if (MSG_papa[2] == '1' && MSG_papa[3] == '0') {            
             cargoTransfer();
         } else if (MSG_papa[3] == '1' && MSG_mama[1] == '0') {
             cargoTransferEnding();
@@ -32,6 +32,8 @@ void DockerPapa::docking()
         undocking();
     }
     //client.sendMsg(MSG_papa);
+
+    servoCargoLock.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
 }
 
 void DockerPapa::undocking()
@@ -49,16 +51,21 @@ void DockerPapa::undocking()
     } else if (MSG_papa[1] == '1')  // А затем, убираем стрелу
         rodRetraction();
 
-    if (analogRead(PIN_CARGO_ON_BORDER) == HIGH && analogRead(PIN_CARGO_AT_HOME) == LOW)
+    if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW){
+        cargoUnLock();
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV10);
-    else
+    }
+    else {
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
+        cargoLock();
+    }
 }
 
 void DockerPapa::stop()
 {
     servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
     servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
+    cargoLock();
 }
 
 void DockerPapa::connect()
@@ -70,26 +77,30 @@ void DockerPapa::connect()
 
 void DockerPapa::rodExtension()
 {
-    if (analogRead(PIN_ROD_EXTENTION) == LOW){
+    if (digitalRead(PIN_ROD_EXTENTION) == LOW){
+        cargoUnLock();
         servoRod.writePWM(Servo_SPT5535LV360::PWM::CV10);
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV2);
     } else {
         printw("done rodExtension\n");
         servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
+        cargoLock();
         MSG_papa[1] = '1';
     }
 }
 
 void DockerPapa::rodRetraction()
 {
-    if (analogRead(PIN_ROD_RETRACTED) == LOW){
+    if (digitalRead(PIN_ROD_RETRACTED) == LOW){
+        cargoUnLock();
         servoRod.writePWM(Servo_SPT5535LV360::PWM::CCV10);
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV1);
     } else {
         printw("done rodRetraction\n");
         servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
+        cargoLock();
         MSG_papa[1] = '0';
     }
 }
