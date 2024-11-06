@@ -8,8 +8,6 @@ DockerMama::DockerMama() {
 
 void DockerMama::docking()
 {    
-    buffer = server.read();
-
     if (buffer != ""){
         MSG_papa = buffer;
         std::cout << MSG_papa << std::endl;
@@ -30,7 +28,6 @@ void DockerMama::docking()
     } else {
         undocking();
     }
-    server.sendMsg(MSG_mama);
 }
 
 void DockerMama::undocking()
@@ -47,8 +44,7 @@ void DockerMama::undocking()
     if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV10);
     else {
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
-        cargoLock();
+        stop();
     }
 }
 

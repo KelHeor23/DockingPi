@@ -7,14 +7,11 @@ DockerPapa::DockerPapa() {}
 
 void DockerPapa::docking()
 {
-    //buffer = client.read();
-
     if (buffer != ""){
         MSG_mama = buffer;
         std::cout << MSG_mama << std::endl;
     }
 
-    MSG_mama[0] = '1';
     MSG_papa[0] = '1';
     if (MSG_mama[0] == '1'){
         if (MSG_papa[1] == '0')
@@ -31,9 +28,6 @@ void DockerPapa::docking()
     } else {
         undocking();
     }
-    //client.sendMsg(MSG_papa);
-
-    servoCargoLock.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
 }
 
 void DockerPapa::undocking()
@@ -56,8 +50,7 @@ void DockerPapa::undocking()
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV10);
     }
     else {
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
-        cargoLock();
+        stop();
     }
 }
 

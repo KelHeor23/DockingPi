@@ -60,6 +60,7 @@ public:
         \brief Функция вращения сервы для движения телеги по часовой стрелке
     */
     void cargoCV(){
+        cargoUnLock();
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV2);
     }
     
@@ -67,6 +68,7 @@ public:
         \brief Функция вращения сервы для движения телеги против часовой стрелки
     */
     void cargoCCV(){
+        cargoUnLock();
         servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV3);
     }
 
