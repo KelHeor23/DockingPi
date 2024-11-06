@@ -7,8 +7,6 @@ DockerPapa::DockerPapa() {}
 
 void DockerPapa::docking()
 {
-    //buffer = client.read();
-
     if (buffer != ""){
         MSG_mama = buffer;
         std::cout << MSG_mama << std::endl;
@@ -31,7 +29,6 @@ void DockerPapa::docking()
     } else {
         undocking();
     }
-    //client.sendMsg(MSG_papa);
 }
 
 void DockerPapa::undocking()
