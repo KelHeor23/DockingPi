@@ -10,12 +10,12 @@
 
 #include <inttypes.h>
 
-/// Пин сервы правого крюка
-constexpr uint8_t PIN_RIGHT_HOOK        = 5;
+/// Пин стрелы
+constexpr uint8_t PIN_ROD               = 5;
 /// Пин сервы левого крюка
 constexpr uint8_t PIN_LEFT_HOOK         = 7;
-/// Пин стрелы
-constexpr uint8_t PIN_ROD               = 8;
+/// Пин сервы правого крюка
+constexpr uint8_t PIN_RIGHT_HOOK        = 8;
 /// Пин телеги
 constexpr uint8_t PIN_CARGO             = 11;
 /// Пин сервы замока тележки
