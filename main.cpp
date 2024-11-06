@@ -111,11 +111,9 @@ int main(int argc, char *argv[])
             break;
         case '4':
             docker->cargoCV();
-            docker->cargoUnLock();
             break;
         case '5':
             docker->cargoCCV();
-            docker->cargoUnLock();
             break;
         } 
     }
