@@ -24,9 +24,7 @@ add_executable(DockingPi main.cpp
     Exchange/IExchange.h
     Exchange/Config.cpp
     Exchange/I2C/I2CPeripheral.h Exchange/I2C/I2CPeripheral.cpp
-    Exchange/I2C/PCA9685.h Exchange/I2C/PCA9685.cpp
-    Exchange/I2C/Constants.h
-
+    Servo/PCA9685/PCA9685.h Servo/PCA9685/PCA9685.cpp Servo/PCA9685/Constants.h
 )
 
 find_library(WIRINGPI_LIBRARIES wiringPi)
