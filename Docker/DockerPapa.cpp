@@ -46,6 +46,7 @@ void DockerPapa::undocking()
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms2500);
     }
     else {
+        cargoTransferSpeed = PCA9685::ms1500;
         stop();
     }
 }

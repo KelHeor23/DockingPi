@@ -38,6 +38,7 @@ void DockerMama::undocking()
     if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms500);
     else {
+        cargoTransferSpeed = PCA9685::ms1500;
         stop();
     }
 }
