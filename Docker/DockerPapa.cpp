@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <iostream>
+#include <wiringPi.h>
 
 #include "DockerPapa.h"
 
@@ -7,11 +8,6 @@ DockerPapa::DockerPapa() {}
 
 void DockerPapa::docking()
 {
-    if (buffer != ""){
-        MSG_mama = buffer;
-        std::cout << MSG_mama << std::endl;
-    }
-
     MSG_papa[0] = '1';
     if (MSG_mama[0] == '1'){
         if (MSG_papa[1] == '0')
@@ -47,7 +43,7 @@ void DockerPapa::undocking()
 
     if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW){
         cargoUnLock();
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV10);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms2500);
     }
     else {
         stop();
@@ -56,8 +52,8 @@ void DockerPapa::undocking()
 
 void DockerPapa::stop()
 {
-    servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
-    servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
+    pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
+    pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
     cargoLock();
 }
 
@@ -72,13 +68,11 @@ void DockerPapa::rodExtension()
 {
     if (digitalRead(PIN_ROD_EXTENTION) == LOW){
         cargoUnLock();
-        servoRod.writePWM(Servo_SPT5535LV360::PWM::CV10);
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV2);
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2500);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2);
     } else {
         printw("done rodExtension\n");
-        servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
-        cargoLock();
+        stop();
         MSG_papa[1] = '1';
     }
 }
@@ -87,13 +81,11 @@ void DockerPapa::rodRetraction()
 {
     if (digitalRead(PIN_ROD_RETRACTED) == LOW){
         cargoUnLock();
-        servoRod.writePWM(Servo_SPT5535LV360::PWM::CCV10);
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV1);
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 1);
     } else {
         printw("done rodRetraction\n");
-        servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
-        cargoLock();
+        stop();
         MSG_papa[1] = '0';
     }
 }
@@ -101,23 +93,23 @@ void DockerPapa::rodRetraction()
 void DockerPapa::pullingUp()
 {
     if (analogRead(PIN_DOCKING_COMPL) == HIGH){
-        servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
         printw("done pullingUp\n");
         MSG_papa[2] = '1';
     } else if (analogRead(PIN_ROD_RETRACTED) == HIGH){
         undocking();
     } else {
-        servoRod.writePWM(Servo_SPT5535LV360::PWM::CCV5);
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000);
     }
 }
 
 void DockerPapa::pushAway()
 {
     if (analogRead(PIN_DOCKING_COMPL) == HIGH){
-        servoRod.writePWM(Servo_SPT5535LV360::PWM::CV5);
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2000);
     } else {
         printw("done pushAway\n");
-        servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
         MSG_papa[2] = '0';
     }
 }
@@ -125,13 +117,15 @@ void DockerPapa::pushAway()
 void DockerPapa::cargoTransfer()
 {
     if (first){
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::NEUTRAL); // Колхоз, нужен для перебора enum
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
         first = false;
     }
 
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
     if (elapsedTime >= cargoAcceleration){
-        servoCargo.increaseSpeedCargoCV();
+        if (cargoTransferSpeed + PCA9685::step < PCA9685::ms2500)
+            cargoTransferSpeed += PCA9685::step;
+        pca.set_pwm(PCA9685::PIN_CARGO, 0,  cargoTransferSpeed);
         lastSwitchTime = m_time::now();
     }
     if (analogRead(PIN_CARGO_ON_BORDER) == LOW && analogRead(PIN_CARGO_AT_HOME) == LOW){
@@ -144,8 +138,10 @@ void DockerPapa::cargoTransferEnding()
 {
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
     if (elapsedTime >= cargoAcceleration){
-        std::cout << "cargoTransferEnding" << std::endl;
-        servoCargo.decreaseSpeedCargoCV();
+        if (cargoTransferSpeed - PCA9685::step > PCA9685::ms1500)
+            cargoTransferSpeed -= PCA9685::step;
+        pca.set_pwm(PCA9685::PIN_CARGO, 0,  cargoTransferSpeed);
+        std::cout << "cargoTransferEnding" << std::endl;        
         lastSwitchTime = m_time::now();
     }
 }

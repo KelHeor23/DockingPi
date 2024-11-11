@@ -9,6 +9,7 @@
 #include <unistd.h>
 
 #include <ncurses.h>
+#include <wiringPi.h>
 
 #include "Docker/DockerFactory.h"
 

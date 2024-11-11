@@ -10,16 +10,20 @@
 
 #include <inttypes.h>
 
-/// Пин стрелы
-constexpr uint8_t PIN_ROD               = 5;
-/// Пин сервы левого крюка
-constexpr uint8_t PIN_LEFT_HOOK         = 7;
-/// Пин сервы правого крюка
-constexpr uint8_t PIN_RIGHT_HOOK        = 8;
-/// Пин телеги
-constexpr uint8_t PIN_CARGO             = 11;
-/// Пин сервы замока тележки
-constexpr uint8_t PIN_CARGO_LOCK        = 12;
+///Список пинов находящийхся на плте PCA9685
+namespace PCA9685 {
+    /// Пин стрелы
+    constexpr uint8_t PIN_ROD               = 0;
+    /// Пин сервы левого крюка
+    constexpr uint8_t PIN_LEFT_HOOK         = 1;
+    /// Пин сервы правого крюка
+    constexpr uint8_t PIN_RIGHT_HOOK        = 2;
+    /// Пин телеги
+    constexpr uint8_t PIN_CARGO             = 3;
+    /// Пин сервы замока тележки
+    constexpr uint8_t PIN_CARGO_LOCK        = 4;
+}
+
 /// Пин стрела задвинута
 constexpr uint8_t PIN_ROD_RETRACTED     = 14;
 /// Пин стрела выдвинута

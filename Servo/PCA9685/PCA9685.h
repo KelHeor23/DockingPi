@@ -6,6 +6,16 @@
 
 class I2CPeripheral;
 
+namespace PCA9685 {
+
+constexpr std::uint16_t ms500 = 0x4B;
+constexpr std::uint16_t ms1000 = 0xCA;
+constexpr std::uint16_t ms1500 = 0x125;
+constexpr std::uint16_t ms2000 = 0x18A;
+constexpr std::uint16_t ms2500 = 0x1EF;
+constexpr std::uint16_t step = 0x15;
+
+
 class PCA9685 {
 public:
     explicit PCA9685(const std::string &device = "/dev/i2c-1", int address = 0x40);
@@ -26,5 +36,7 @@ private:
     double frequency = 200.0;
 
 };
+};
+
 
 #endif // PCA9685_H

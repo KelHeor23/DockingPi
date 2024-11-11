@@ -10,8 +10,8 @@
 #include <chrono>
 #include <string>
 
-#include "../Servo/Servo.h"
 #include "../Exchange/Config.h"
+#include "../Servo/PCA9685/PCA9685.h"
 #include "DockerPinout.h"
 
 using m_time = std::chrono::system_clock;
@@ -24,14 +24,11 @@ public:
 
     /*!
         \brief Конструктор создания модуля стыковки.
-        Создает экземпляр модуля стыковки, инициализирует пины и сервы
+        Создает экземпляр модуля стыковки, забает базовое полежение сервов
     */
-    Docker() : servoRod(PIN_ROD), servoCargo(PIN_CARGO),
-        servoRightHook(PIN_RIGHT_HOOK), servoLeftHook(PIN_LEFT_HOOK),
-        servoCargoLock(PIN_CARGO_LOCK) {
-        pinMode(PIN_ROD_EXTENTION, INPUT);
-        pinMode(PIN_ROD_RETRACTED, INPUT);
-        pinMode(PIN_DOCKING_COMPL, INPUT);
+    Docker() {
+        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
+        pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
     }
 
     virtual ~Docker(){}
@@ -57,46 +54,34 @@ public:
     virtual void connect()         = 0;
 
     /*!
-        \brief Функция вращения сервы для движения телеги по часовой стрелке
+        \brief Функция вращения сервы телеги по часовй стрелке
     */
     void cargoCV(){
-        cargoUnLock();
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::CV2);
+        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms1500 + PCA9685::step * 2);
     }
-    
+
     /*!
-        \brief Функция вращения сервы для движения телеги против часовой стрелки
+        \brief Функция вращения сервы телеги против часовй стрелки
     */
     void cargoCCV(){
-        cargoUnLock();
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV3);
+        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms1500 - PCA9685::step * 3);
     }
 
     /*!
         \brief Функция закрытия замка движения телеги
     */
     void cargoLock(){
-        servoCargoLock.writePWM(Servo_DS3235_270::PWM::CV5);
+        /// У сервы закрытия замка телеги более узкий диапазон вращения
+        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms1000);
     }
 
     /*!
         \brief Функция открытия замка движения телеги
     */
     void cargoUnLock(){
-        servoCargoLock.writePWM(Servo_DS3235_270::PWM::CCV5);
+        /// У сервы закрытия замка телеги более узкий диапазон вращения
+        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms2000);
     }
-
-public:
-    /// Серва штанги
-    Servo_SPT5535LV360  servoRod;
-    /// Серва телеги
-    Servo_SPT5535LV360  servoCargo;
-    /// Серва правого крюка
-    Servo_DS3235_270    servoRightHook;
-    /// Серва левого крюка
-    Servo_DS3235_270    servoLeftHook;
-    /// Серва замка тележки
-    Servo_DS3235_270    servoCargoLock;
 
 public:
     /*!
@@ -133,7 +118,11 @@ public:
     /// Флаг закрытия правого крюка
     bool rlock = false;
 
-    std::string buffer;
+    /// Плата генерирующая ШИМ сигналы для серв
+    PCA9685::PCA9685 pca{"/dev/i2c-2"};
+
+    /// Скорость телеги в момент ее передачи
+    std::uint16_t cargoTransferSpeed = PCA9685::ms1500;
 };
 
 #endif // DOCKER_H
