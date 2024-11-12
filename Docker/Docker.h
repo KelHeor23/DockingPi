@@ -27,6 +27,7 @@ public:
         Создает экземпляр модуля стыковки, забает базовое полежение сервов
     */
     Docker() {
+        pca.set_pwm_freq(50.0);
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
         pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
     }
