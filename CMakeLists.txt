@@ -23,6 +23,8 @@ add_executable(DockingPi main.cpp
     Exchange/Config.h
     Exchange/IExchange.h
     Exchange/Config.cpp
+    Exchange/I2C/I2CPeripheral.h Exchange/I2C/I2CPeripheral.cpp
+    Servo/PCA9685/PCA9685.h Servo/PCA9685/PCA9685.cpp Servo/PCA9685/Constants.h
 )
 
 find_library(WIRINGPI_LIBRARIES wiringPi)
@@ -31,6 +33,7 @@ target_link_libraries(DockingPi
     ncurses
     MAVSDK::mavsdk             #All apps link against mavsdk library
     ${WIRINGPI_LIBRARIES}
+    i2c
 )
 
 find_library(WIRINGPI_LIBRARIES wiringPi)

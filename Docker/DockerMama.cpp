@@ -1,18 +1,12 @@
 #include "DockerMama.h"
 #include <iostream>
+#include <wiringPi.h>
 
 DockerMama::DockerMama() {
-    servoLeftHook.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
-    servoRightHook.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
 }
 
 void DockerMama::docking()
 {    
-    if (buffer != ""){
-        MSG_papa = buffer;
-        std::cout << MSG_papa << std::endl;
-    }
-
     MSG_mama[0] = '1';
     if (MSG_papa[0] == '1'){
         if (MSG_mama[1] == '0'){    // Закрываем крюки
@@ -34,24 +28,25 @@ void DockerMama::undocking()
 {
     MSG_mama[0] = '0';
     if (rlock || llock){
-        servoLeftHook.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
-        servoRightHook.writePWM(Servo_DS3235_270::PWM::NEUTRAL);
+        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
+        pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
         MSG_mama[1] = '0';
         rlock = false;
         llock = false;
     }
 
     if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::CCV10);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms500);
     else {
+        cargoTransferSpeed = PCA9685::ms1500;
         stop();
     }
 }
 
 void DockerMama::stop()
 {
-    servoRod.writePWM(Servo_SPT5535LV360::PWM::STOP);
-    servoCargo.writePWM(Servo_SPT5535LV360::PWM::STOP);
+    pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+    pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
     cargoLock();    // Телега встала. Закрываю замок
 }
 
@@ -65,12 +60,12 @@ void DockerMama::connect()
 void DockerMama::lockingHooks()
 { 
     if (digitalRead(PIN_LEFT_HOOK_ACTIVE) == HIGH) {
-        servoLeftHook.writePWM(Servo_DS3235_270::PWM::CCV5);
+        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1000);
         llock = true;
     }
 
     if (digitalRead(PIN_RIGHT_HOOK_ACTIVE) == HIGH) {
-        servoRightHook.writePWM(Servo_DS3235_270::PWM::CV5);
+        pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms2000);
         rlock = true;
     }
 
@@ -82,13 +77,15 @@ void DockerMama::lockingHooks()
 void DockerMama::cargoTransferBegin()
 {
     if (first){
-        servoCargo.writePWM(Servo_SPT5535LV360::PWM::NEUTRAL); // Колхоз, нужен для перебора enum
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
         first = false;
     }
 
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
     if (elapsedTime >= cargoAcceleration){
-        servoCargo.increaseSpeedCargoCV();
+        if (cargoTransferSpeed + PCA9685::step < PCA9685::ms2500)
+            cargoTransferSpeed += PCA9685::step;
+        pca.set_pwm(PCA9685::PIN_CARGO, 0,  cargoTransferSpeed);
         lastSwitchTime = m_time::now();
     }
 }
@@ -97,7 +94,9 @@ void DockerMama::cargoTransferEnding()
 {
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
     if (elapsedTime >= cargoAcceleration){
-        servoCargo.decreaseSpeedCargoCV();
+        if (cargoTransferSpeed - PCA9685::step > PCA9685::ms1500)
+            cargoTransferSpeed -= PCA9685::step;
+        pca.set_pwm(PCA9685::PIN_CARGO, 0,  cargoTransferSpeed);
         lastSwitchTime = m_time::now();
     }
 
