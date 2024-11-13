@@ -58,14 +58,14 @@ public:
         \brief Функция вращения сервы телеги по часовй стрелке
     */
     void cargoCV(){
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 5);
     }
 
     /*!
         \brief Функция вращения сервы телеги против часовй стрелки
     */
     void cargoCCV(){
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 3);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 5);
     }
 
     /*!

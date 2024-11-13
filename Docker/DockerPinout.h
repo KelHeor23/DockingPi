@@ -22,7 +22,6 @@ namespace PCA9685 {
     constexpr uint8_t PIN_CARGO_LOCK        = 3;
     /// Пин телеги
     constexpr uint8_t PIN_CARGO             = 4;
-
 }
 
 /// Пин стрела задвинута
