@@ -70,7 +70,7 @@ void DockerPapa::rodExtension()
 {
     if (digitalRead(PIN_ROD_EXTENTION) == LOW){
         cargoUnLock();
-        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000);
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2000);
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2);
     } else {
         printw("done rodExtension\n");
@@ -83,7 +83,7 @@ void DockerPapa::rodRetraction()
 {
     if (digitalRead(PIN_ROD_RETRACTED) == LOW){
         cargoUnLock();
-        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2000);
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000);
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 1);
     } else {
         printw("done rodRetraction\n");
