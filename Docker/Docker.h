@@ -58,6 +58,7 @@ public:
         \brief Функция вращения сервы телеги по часовй стрелке
     */
     void cargoCV(){
+        cargoUnLock();
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 5);
     }
 
@@ -65,6 +66,7 @@ public:
         \brief Функция вращения сервы телеги против часовй стрелки
     */
     void cargoCCV(){
+        cargoUnLock();
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 5);
     }
 
