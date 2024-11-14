@@ -73,7 +73,7 @@ public:
     */
     void cargoLock(){
         /// У сервы закрытия замка телеги более узкий диапазон вращения
-        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms1000);
+        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms2000 + PCA9685::step * 2);
     }
 
     /*!
@@ -81,7 +81,7 @@ public:
     */
     void cargoUnLock(){
         /// У сервы закрытия замка телеги более узкий диапазон вращения
-        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms2000);
+        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms1000 - PCA9685::step * 2);
     }
 
 public:

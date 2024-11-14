@@ -107,8 +107,8 @@ int main(int argc, char *argv[])
             docker->undocking();
             break;
         case '3':
-            docker->stop();
             docker->cargoLock();
+            docker->stop();            
             break;
         case '4':
             docker->cargoCV();
