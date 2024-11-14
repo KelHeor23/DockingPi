@@ -24,10 +24,10 @@ namespace PCA9685 {
     constexpr uint8_t PIN_CARGO             = 4;
 }
 
-/// Пин стрела задвинута
-constexpr uint8_t PIN_ROD_RETRACTED     = 14;
 /// Пин стрела выдвинута
-constexpr uint8_t PIN_ROD_EXTENTION     = 17;
+constexpr uint8_t PIN_ROD_EXTENTION     = 14;
+/// Пин стрела задвинута
+constexpr uint8_t PIN_ROD_RETRACTED     = 17;
 /// Пин стыковка завершена
 constexpr uint8_t PIN_DOCKING_COMPL     = 19;
 /// Пин телега на границе
