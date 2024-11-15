@@ -42,14 +42,14 @@ void DockerPapa::undocking()
     } else if (MSG_papa[1] == '1')  // А затем, убираем стрелу
         rodRetraction();
 
-    if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW){
+    /*if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW){
         cargoUnLock();
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms2500);
     }
     else {
         cargoTransferSpeed = PCA9685::ms1500;
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-    }
+    }*/
 }
 
 void DockerPapa::stop()
