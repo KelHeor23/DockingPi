@@ -71,6 +71,11 @@ private:
 
 private:
     Client client;
+
+    static constexpr int balanceCargo = 32;
+
+    int cargoPosStart = 0;
+    bool firstFlag = true;
 };
 
 #endif // DOCKERPAPA_H

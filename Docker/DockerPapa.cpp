@@ -50,6 +50,8 @@ void DockerPapa::undocking()
         cargoTransferSpeed = PCA9685::ms1500;
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
     }*/
+    if (MSG_papa[1] == '0')
+        firstFlag = true;
 }
 
 void DockerPapa::connect()
@@ -61,14 +63,25 @@ void DockerPapa::connect()
 
 void DockerPapa::rodExtension()
 {
+    if (firstFlag){
+        cargoPosStart = odometerCargo.getCurPos();
+        firstFlag = false;
+    }
+
     if (digitalRead(PIN_ROD_EXTENTION) == LOW){
         cargoUnLock();
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2000);
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step);
     } else {
         printw("done rodExtension\n");
-        stop();
-        MSG_papa[1] = '1';
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
+    }
+
+    if (odometerCargo.getCurPos() + balanceCargo > cargoPosStart){
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step);
+    } else {
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+        if (digitalRead(PIN_ROD_EXTENTION) == HIGH)
+            MSG_papa[1] = '1';
     }
 }
 
@@ -77,11 +90,18 @@ void DockerPapa::rodRetraction()
     if (digitalRead(PIN_ROD_RETRACTED) == LOW){
         cargoUnLock();
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000);
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step);
     } else {
         printw("done rodRetraction\n");
-        stop();
-        MSG_papa[1] = '0';
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
+        stop();        
+    }
+
+    if (odometerCargo.getCurPos() < cargoPosStart){
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step);
+    } else {
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+        if (digitalRead(PIN_ROD_RETRACTED) == HIGH)
+            MSG_papa[1] = '0';
     }
 }
 
