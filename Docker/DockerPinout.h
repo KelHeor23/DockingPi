@@ -24,6 +24,8 @@ namespace PCA9685 {
     constexpr uint8_t PIN_CARGO             = 4;
 }
 
+/// Пин одометра телеги
+constexpr uint8_t PIN_ODOMETER_CARGO     = 2;
 /// Пин стрела выдвинута
 constexpr uint8_t PIN_ROD_EXTENTION     = 14;
 /// Пин стрела задвинута

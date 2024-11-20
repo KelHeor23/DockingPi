@@ -43,13 +43,6 @@ void DockerMama::undocking()
     }
 }
 
-void DockerMama::stop()
-{
-    pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-    pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
-    cargoLock();    // Телега встала. Закрываю замок
-}
-
 void DockerMama::connect()
 {
     server.connect(address_g, port_g);

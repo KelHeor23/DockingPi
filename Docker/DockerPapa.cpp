@@ -52,13 +52,6 @@ void DockerPapa::undocking()
     }*/
 }
 
-void DockerPapa::stop()
-{
-    pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
-    pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-    cargoLock();
-}
-
 void DockerPapa::connect()
 {
     client.connect(address_g, port_g);

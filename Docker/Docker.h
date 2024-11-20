@@ -8,10 +8,12 @@
 #define DOCKER_H
 
 #include <chrono>
+#include <iostream>
 #include <string>
 
 #include "../Exchange/Config.h"
 #include "../Servo/PCA9685/PCA9685.h"
+#include "../Servo/Odometer/Odometer.h"
 #include "DockerPinout.h"
 
 using m_time = std::chrono::system_clock;
@@ -30,6 +32,9 @@ public:
         pca.set_pwm_freq(50.0);
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
         pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
+
+        /// Запускаю наблюдение за одометром
+        odometerCargo.startObservePos();
     }
 
     virtual ~Docker(){}
@@ -45,11 +50,6 @@ public:
     virtual void undocking()    = 0;
 
     /*!
-        \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
-    */
-    virtual void stop()         = 0;
-
-    /*!
         \brief Функция вызывающая connect в механизме обмена
     */
     virtual void connect()         = 0;
@@ -60,6 +60,7 @@ public:
     void cargoCV(){
         cargoUnLock();
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 5);
+        odometerCargo.setCurState(1);
     }
 
     /*!
@@ -68,6 +69,20 @@ public:
     void cargoCCV(){
         cargoUnLock();
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 5);
+        odometerCargo.setCurState(-1);
+    }
+
+    /*!
+        \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
+    */
+    void stop(){
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+        cargoLock();
+        odometerCargo.setCurState(0);
+
+        std::cout << "Current pos: " << odometerCargo.getCurPos() << std::endl;
+        usleep(1000000);
     }
 
     /*!
@@ -126,6 +141,8 @@ public:
 
     /// Скорость телеги в момент ее передачи
     std::uint16_t cargoTransferSpeed = PCA9685::ms1500;
+
+    Odometer odometerCargo{PIN_ODOMETER_CARGO};
 };
 
 #endif // DOCKER_H
