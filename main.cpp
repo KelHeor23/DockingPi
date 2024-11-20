@@ -94,6 +94,7 @@ int main(int argc, char *argv[])
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE); // Устанавливаем неблокирующий режим ввода
     int key, temp;
+    bool first = true;
     while (true) {
         key = getch();
         if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5')
@@ -102,19 +103,27 @@ int main(int argc, char *argv[])
         switch (temp) {
         case '1':
             docker->docking();
+            first = true;
             break;
         case '2':
             docker->undocking();
+            first = true;
             break;
         case '3':
             docker->cargoLock();
-            docker->stop();            
+            docker->stop();
+            if (first){
+                std::cout << "Current pos: " << docker->odometerCargo.getCurPos() << std::endl;
+                first = false;
+            }
             break;
         case '4':
             docker->cargoCV();
+            first = true;
             break;
         case '5':
             docker->cargoCCV();
+            first = true;
             break;
         } 
     }

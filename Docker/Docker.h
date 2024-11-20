@@ -59,7 +59,7 @@ public:
     */
     void cargoCV(){
         cargoUnLock();
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 5);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2);
         odometerCargo.setCurState(1);
     }
 
@@ -68,7 +68,7 @@ public:
     */
     void cargoCCV(){
         cargoUnLock();
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 5);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2);
         odometerCargo.setCurState(-1);
     }
 
@@ -80,9 +80,6 @@ public:
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
         cargoLock();
         odometerCargo.setCurState(0);
-
-        std::cout << "Current pos: " << odometerCargo.getCurPos() << std::endl;
-        usleep(1000000);
     }
 
     /*!
