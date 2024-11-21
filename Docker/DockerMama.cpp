@@ -2,6 +2,8 @@
 #include <iostream>
 #include <wiringPi.h>
 
+#include "../config.h"
+
 DockerMama::DockerMama() {
 }
 

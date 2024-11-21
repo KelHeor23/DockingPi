@@ -72,8 +72,6 @@ private:
 private:
     Client client;
 
-    static constexpr int balanceCargo = 62;
-
     int cargoPosStart = 0;
     bool firstFlag = true;
 };

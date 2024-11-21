@@ -11,9 +11,8 @@
 #include <iostream>
 #include <string>
 
-#include "../Exchange/Config.h"
-#include "../Servo/PCA9685/PCA9685.h"
-#include "../Servo/Odometer/Odometer.h"
+#include "../PayloadMechanisms/PCA9685/PCA9685.h"
+#include "../PayloadMechanisms/Odometer/Odometer.h"
 #include "DockerPinout.h"
 
 using m_time = std::chrono::system_clock;
