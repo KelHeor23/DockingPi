@@ -33,11 +33,6 @@ public:
     void undocking()    override;
 
     /*!
-        \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
-    */
-    void stop()         override;
-
-    /*!
         \brief Функция прокидывающая вызывающая connect в server
     */
     void connect()      override;

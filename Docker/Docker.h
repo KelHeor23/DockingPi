@@ -8,10 +8,11 @@
 #define DOCKER_H
 
 #include <chrono>
+#include <iostream>
 #include <string>
 
-#include "../Exchange/Config.h"
-#include "../Servo/PCA9685/PCA9685.h"
+#include "../PayloadMechanisms/PCA9685/PCA9685.h"
+#include "../PayloadMechanisms/Odometer/Odometer.h"
 #include "DockerPinout.h"
 
 using m_time = std::chrono::system_clock;
@@ -30,6 +31,9 @@ public:
         pca.set_pwm_freq(50.0);
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
         pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
+
+        /// Запускаю наблюдение за одометром
+        odometerCargo.startObservePos();
     }
 
     virtual ~Docker(){}
@@ -45,11 +49,6 @@ public:
     virtual void undocking()    = 0;
 
     /*!
-        \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
-    */
-    virtual void stop()         = 0;
-
-    /*!
         \brief Функция вызывающая connect в механизме обмена
     */
     virtual void connect()         = 0;
@@ -58,14 +57,26 @@ public:
         \brief Функция вращения сервы телеги по часовй стрелке
     */
     void cargoCV(){
-        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms1500 + PCA9685::step * 2);
+        cargoUnLock();
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2);
     }
 
     /*!
         \brief Функция вращения сервы телеги против часовй стрелки
     */
     void cargoCCV(){
-        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms1500 - PCA9685::step * 3);
+        cargoUnLock();
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2);
+    }
+
+    /*!
+        \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
+    */
+    void stop(){
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+        cargoLock();
+        odometerCargo.setCurState(0);
     }
 
     /*!
@@ -73,7 +84,7 @@ public:
     */
     void cargoLock(){
         /// У сервы закрытия замка телеги более узкий диапазон вращения
-        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms1000);
+        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms2000 + PCA9685::step * 2);
     }
 
     /*!
@@ -81,7 +92,7 @@ public:
     */
     void cargoUnLock(){
         /// У сервы закрытия замка телеги более узкий диапазон вращения
-        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms2000);
+        pca.set_pwm(PCA9685::PIN_CARGO_LOCK, 0, PCA9685::ms1000 - PCA9685::step * 2);
     }
 
 public:
@@ -124,6 +135,8 @@ public:
 
     /// Скорость телеги в момент ее передачи
     std::uint16_t cargoTransferSpeed = PCA9685::ms1500;
+
+    Odometer odometerCargo{PIN_ODOMETER_CARGO};
 };
 
 #endif // DOCKER_H

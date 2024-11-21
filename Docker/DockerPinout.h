@@ -12,22 +12,24 @@
 
 ///Список пинов находящийхся на плте PCA9685
 namespace PCA9685 {
-    /// Пин стрелы
-    constexpr uint8_t PIN_ROD               = 0;
     /// Пин сервы левого крюка
-    constexpr uint8_t PIN_LEFT_HOOK         = 1;
+    constexpr uint8_t PIN_LEFT_HOOK         = 0;
     /// Пин сервы правого крюка
-    constexpr uint8_t PIN_RIGHT_HOOK        = 2;
-    /// Пин телеги
-    constexpr uint8_t PIN_CARGO             = 3;
+    constexpr uint8_t PIN_RIGHT_HOOK        = 1;
+    /// Пин стрелы
+    constexpr uint8_t PIN_ROD               = 2;
     /// Пин сервы замока тележки
-    constexpr uint8_t PIN_CARGO_LOCK        = 4;
+    constexpr uint8_t PIN_CARGO_LOCK        = 3;
+    /// Пин телеги
+    constexpr uint8_t PIN_CARGO             = 4;
 }
 
-/// Пин стрела задвинута
-constexpr uint8_t PIN_ROD_RETRACTED     = 14;
+/// Пин одометра телеги
+constexpr uint8_t PIN_ODOMETER_CARGO     = 2;
 /// Пин стрела выдвинута
-constexpr uint8_t PIN_ROD_EXTENTION     = 17;
+constexpr uint8_t PIN_ROD_EXTENTION     = 14;
+/// Пин стрела задвинута
+constexpr uint8_t PIN_ROD_RETRACTED     = 17;
 /// Пин стыковка завершена
 constexpr uint8_t PIN_DOCKING_COMPL     = 19;
 /// Пин телега на границе

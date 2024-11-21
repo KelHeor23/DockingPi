@@ -33,11 +33,6 @@ public:
     void undocking() override;
 
     /*!
-        \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
-    */
-    void stop() override;
-
-    /*!
         \brief Функция прокидывающая вызывающая connect в client
     */
     void connect()      override;
@@ -76,6 +71,9 @@ private:
 
 private:
     Client client;
+
+    int cargoPosStart = 0;
+    bool firstFlag = true;
 };
 
 #endif // DOCKERPAPA_H

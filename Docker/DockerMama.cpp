@@ -2,6 +2,8 @@
 #include <iostream>
 #include <wiringPi.h>
 
+#include "../config.h"
+
 DockerMama::DockerMama() {
 }
 
@@ -41,13 +43,6 @@ void DockerMama::undocking()
         cargoTransferSpeed = PCA9685::ms1500;
         stop();
     }
-}
-
-void DockerMama::stop()
-{
-    pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-    pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
-    cargoLock();    // Телега встала. Закрываю замок
 }
 
 void DockerMama::connect()
