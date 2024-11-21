@@ -78,7 +78,7 @@ void DockerPapa::rodExtension()
     if (odometerCargo.getCurPos() > cargoPosStart - balanceCargo){
         cargoUnLock();
         odometerCargo.setCurState(-1);
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2 - 0x5);
     } else {
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
         if (digitalRead(PIN_ROD_EXTENTION) == HIGH)
@@ -98,7 +98,7 @@ void DockerPapa::rodRetraction()
     if (odometerCargo.getCurPos() < cargoPosStart){
         cargoUnLock();
         odometerCargo.setCurState(1);
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2 + 0xA);
     } else {
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
         if (digitalRead(PIN_ROD_RETRACTED) == HIGH)
