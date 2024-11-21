@@ -72,7 +72,7 @@ private:
 private:
     Client client;
 
-    static constexpr int balanceCargo = 32;
+    static constexpr int balanceCargo = 28;
 
     int cargoPosStart = 0;
     bool firstFlag = true;
