@@ -42,7 +42,7 @@ public:
 private:
     int startPin = 0; //< Значение стартового пина
 
-    std::string serialAdress = "serial:///dev/serial4:57600";  //< Serial адресс связи с полетником
+    std::string serialAdress = "serial:///dev/ttyS1";  //< Serial адресс связи с полетником
 };
 
 #endif // MAVLINKEXCHANGE_H
