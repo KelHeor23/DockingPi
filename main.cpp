@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
             break;
 
         }
-        exec_freq();
+        //exec_freq();
     }
 #else
     initscr();

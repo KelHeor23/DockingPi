@@ -73,6 +73,7 @@ void DockerPapa::rodExtension()
     if (digitalRead(PIN_ROD_EXTENTION) == HIGH && odometerCargo.getCurPos() <= cargoPosStart - balance_cargo_g){
         stop();
         printw("done rodExtension\n");
+        std::cout << "done rodExtension\n" << std::endl;
         MSG_papa[1] = '1';
         return;
     }
@@ -99,6 +100,7 @@ void DockerPapa::rodRetraction()
     if (digitalRead(PIN_ROD_RETRACTED) == HIGH && odometerCargo.getCurPos() >= cargoPosStart){
         stop();
         printw("done rodRetraction\n");
+        std::cout << "done rodRetraction\n" << std::endl;
         MSG_papa[1] = '0';
         return;
     }
