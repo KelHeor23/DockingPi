@@ -34,7 +34,7 @@ int MavlinkExchange::init()
             else
                 startPin = -1;
         } else {
-            std::cout << "RC Channel 8 is not available." << std::endl;
+            std::cout << "RC Channel 11 is not available." << std::endl;
             return 0;
         }
         return 0;
