@@ -79,13 +79,18 @@ int main(int argc, char *argv[])
     std::cout << "Docking begin" << std::endl;
 
     while (true) {
-        if (mavExchange.getStartPin() == 1)
+        switch(mavExchange.getStartPin()){
+        case 1:
             docker->docking();
-        else if (mavExchange.getStartPin() == 0)
+            break;
+        case 0:
             docker->undocking();
-        else
+            break;
+        default:
             docker->stop();
+            break;
 
+        }
         exec_freq();
     }
 #else
