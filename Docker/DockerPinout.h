@@ -28,18 +28,17 @@ namespace PCA9685 {
 constexpr uint8_t PIN_ODOMETER_CARGO     = 2;
 /// Пин стрела выдвинута
 constexpr uint8_t PIN_ROD_EXTENTION     = 14;
-/// Пин стрела задвинута
-constexpr uint8_t PIN_ROD_RETRACTED     = 17;
-/// Пин стыковка завершена
-constexpr uint8_t PIN_DOCKING_COMPL     = 19;
-/// Пин телега на границе
-constexpr uint8_t PIN_CARGO_ON_BORDER   = 20;
-/// Пин телега на домашней/стартовой позиции
-constexpr uint8_t PIN_CARGO_AT_HOME     = 22;
 /// Пин левый крюк активирован
-constexpr uint8_t PIN_LEFT_HOOK_ACTIVE  = 23;
+constexpr uint8_t PIN_LEFT_HOOK_ACTIVE  = 13;
 /// Пин правый крюк активирован
-constexpr uint8_t PIN_RIGHT_HOOK_ACTIVE = 25;
-
+constexpr uint8_t PIN_RIGHT_HOOK_ACTIVE = 15;
+/// Пин телега на границе
+constexpr uint8_t PIN_CARGO_ON_BORDER   = 16;
+/// Пин телега на домашней/стартовой позиции
+constexpr uint8_t PIN_CARGO_AT_HOME     = 21;
+/// Пин стыковка завершена
+constexpr uint8_t PIN_DOCKING_COMPL     = 24;
+/// Пин стрела задвинута
+constexpr uint8_t PIN_ROD_RETRACTED     = 25;
 
 #endif // DOCKERPINOUT_H
