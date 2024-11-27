@@ -14,8 +14,6 @@
 #include "Docker/DockerFactory.h"
 #include "Mavlink/MavlinkExchange.h"
 
-#define JOYSTICK 1 ///< Макрос указывающий что запуск производится с ипользованием джостика
-
 /*!
     Функция задающая задержку в миллисекундах для каждой иттерации работы docking
 */
@@ -33,12 +31,13 @@ int main(int argc, char *argv[])
 {
     DockerFactory factory;          ///> factory - Фабрика модулей стыковки
     std::unique_ptr<Docker> docker; ///> docker - Непосредсвтенный механизм стыковки
+    bool useJoystick = false;
 
     /* Read params and running fabric*/
     //-----------------------------------------------------------------------------------------------
 
     {
-        if (argc != 2) {
+        if (argc != 3) {
             std::cerr << "Please write type of drone. Types: " << types_g << std::endl;
             return 0;
         }
@@ -60,6 +59,20 @@ int main(int argc, char *argv[])
         }
 
         std::cout << "The program is running for type" << type << std::endl;
+
+        type = argv[2];
+
+        if (type.compare("1") == 0){
+            useJoystick = true;
+            std::cout << "The program is running with joystick" << type << std::endl;
+        } else if (type.compare("0") == 0){
+            useJoystick = false;
+        } else {
+            std::cerr << "unknow param using joystick" << std::endl;
+            std::cout << "The program is running without joystick" << type << std::endl;
+            return 0;
+        }
+
     }
     //-----------------------------------------------------------------------------------------------
 
@@ -71,71 +84,70 @@ int main(int argc, char *argv[])
         std::cout << msg << std::endl;
     }*/
 
-#if JOYSTICK
-    MavlinkExchange mavExchange;
-    if (!mavExchange.init())
-        return 0;
+    if (useJoystick){
+        MavlinkExchange mavExchange;
+        if (!mavExchange.init())
+            return 0;
 
-    std::cout << "Docking begin" << std::endl;
+        std::cout << "Docking begin" << std::endl;
 
-    while (true) {
-        switch(mavExchange.getStartPin()){
-        case 1:
-            docker->docking();
-            break;
-        case 0:
-            docker->undocking();
-            break;
-        default:
-            docker->stop();
-            break;
+        while (true) {
+            switch(mavExchange.getStartPin()){
+            case 1:
+                docker->docking();
+                break;
+            case 0:
+                docker->undocking();
+                break;
+            default:
+                docker->stop();
+                break;
 
-        }
-        //exec_freq();
-    }
-#else
-    initscr();
-    noecho();
-    cbreak();
-    keypad(stdscr, TRUE);
-    nodelay(stdscr, TRUE); // Устанавливаем неблокирующий режим ввода
-    int key, temp;
-    bool first = true;
-    while (true) {
-        key = getch();
-        if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5')
-            temp = key;
-
-        switch (temp) {
-        case '1':
-            docker->docking();
-            first = true;
-            break;
-        case '2':
-            docker->undocking();
-            first = true;
-            break;
-        case '3':
-            docker->cargoLock();
-            docker->stop();
-            if (first){
-                std::cout << "Current pos: " << docker->odometerCargo.getCurPos() << std::endl;
-                first = false;
             }
-            break;
-        case '4':
-            docker->cargoCV();
-            first = true;
-            break;
-        case '5':
-            docker->cargoCCV();
-            first = true;
-            break;
-        } 
+            //exec_freq();
+        }
+    } else {
+        initscr();
+        noecho();
+        cbreak();
+        keypad(stdscr, TRUE);
+        nodelay(stdscr, TRUE); // Устанавливаем неблокирующий режим ввода
+        int key, temp;
+        bool first = true;
+        while (true) {
+            key = getch();
+            if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5')
+                temp = key;
+
+            switch (temp) {
+            case '1':
+                docker->docking();
+                first = true;
+                break;
+            case '2':
+                docker->undocking();
+                first = true;
+                break;
+            case '3':
+                docker->cargoLock();
+                docker->stop();
+                if (first){
+                    std::cout << "Current pos: " << docker->odometerCargo.getCurPos() << std::endl;
+                    first = false;
+                }
+                break;
+            case '4':
+                docker->cargoCV();
+                first = true;
+                break;
+            case '5':
+                docker->cargoCCV();
+                first = true;
+                break;
+            }
+        }
+
+        endwin();
     }
-
-    endwin();
-#endif
-
     return 0;
 }
