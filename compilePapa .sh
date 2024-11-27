@@ -2,4 +2,4 @@ cmake -Bbuild -H.
 cmake --build build -j4
 cd build
 make
-./DockingPi Papa
+./DockingPi Papa 1

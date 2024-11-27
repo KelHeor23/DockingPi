@@ -70,11 +70,20 @@ void DockerPapa::rodExtension()
         firstFlag = false;
     }
 
+    if (digitalRead(PIN_ROD_EXTENTION) == HIGH && odometerCargo.getCurPos() <= cargoPosStart - balance_cargo_g){
+        stop();
+        printw("done rodExtension\n");
+        std::cout << "done rodExtension\n" << std::endl;
+        MSG_papa[1] = '1';
+        return;
+    }
+
     if (digitalRead(PIN_ROD_EXTENTION) == LOW){        
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2000);
     } else {
-        printw("done rodExtension\n");
-        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
+        usleep(1000);
+        if (digitalRead(PIN_ROD_EXTENTION) == HIGH)
+            pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
     }
 
     if (odometerCargo.getCurPos() > cargoPosStart - balance_cargo_g){
@@ -83,18 +92,25 @@ void DockerPapa::rodExtension()
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2 - 0x5);
     } else {
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-        if (digitalRead(PIN_ROD_EXTENTION) == HIGH)
-            MSG_papa[1] = '1';
     }
 }
 
 void DockerPapa::rodRetraction()
 {
+    if (digitalRead(PIN_ROD_RETRACTED) == HIGH && odometerCargo.getCurPos() >= cargoPosStart){
+        stop();
+        printw("done rodRetraction\n");
+        std::cout << "done rodRetraction\n" << std::endl;
+        MSG_papa[1] = '0';
+        return;
+    }
+
     if (digitalRead(PIN_ROD_RETRACTED) == LOW){        
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000);
     } else {
-        printw("done rodRetraction\n");
-        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500); 
+        usleep(1000);
+        if (digitalRead(PIN_ROD_RETRACTED) == HIGH)
+            pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
     }
 
     if (odometerCargo.getCurPos() < cargoPosStart){
@@ -103,8 +119,6 @@ void DockerPapa::rodRetraction()
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2 + 0xA);
     } else {
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-        if (digitalRead(PIN_ROD_RETRACTED) == HIGH)
-            MSG_papa[1] = '0';
     }
 }
 
