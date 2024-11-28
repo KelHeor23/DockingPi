@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
             case 1:
                 docker->docking();
                 break;
-            case 0:
+            case -1:
                 docker->undocking();
                 break;
             default:
