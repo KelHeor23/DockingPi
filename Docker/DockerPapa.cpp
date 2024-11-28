@@ -92,6 +92,7 @@ void DockerPapa::rodExtension()
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2 + 0x5);
     } else {
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+        cargoLock();
     }
 }
 
@@ -119,6 +120,7 @@ void DockerPapa::rodRetraction()
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2);
     } else {
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+        cargoLock();
     }
 }
 
