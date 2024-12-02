@@ -47,8 +47,6 @@ void DockerMama::undocking()
 
 void DockerMama::connect()
 {
-    server.connect(address_g, port_g);
-
     std::cout << "Connection complite!" << std::endl;
 }
 

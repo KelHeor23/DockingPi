@@ -14,9 +14,9 @@ add_executable(DockingPi main.cpp
     Docker/DockerFactory.h
     Docker/DockerPinout.h
     Mavlink/MavlinkExchange.h Mavlink/MavlinkExchange.cpp
-    Exchange/Client.h Exchange/Client.cpp
-    Exchange/Server.h Exchange/Server.cpp
-    Exchange/IExchange.h
+
+
+
     Exchange/I2C/I2CPeripheral.h Exchange/I2C/I2CPeripheral.cpp
     PayloadMechanisms/PCA9685/PCA9685.h PayloadMechanisms/PCA9685/PCA9685.cpp PayloadMechanisms/PCA9685/Constants.h
     PayloadMechanisms/Odometer/Odometer.h PayloadMechanisms/Odometer/Odometer.cpp

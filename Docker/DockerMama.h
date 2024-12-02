@@ -8,8 +8,6 @@
 
 #include "Docker.h"
 
-#include "../Exchange/Server.h"
-
 /*!
     \brief Класс описывающий модуль стыковки для устроЙства Mama
 */
@@ -53,9 +51,6 @@ private:
         \brief Функция плавного завершения приёма телеги
     */
     void cargoTransferEnding();
-
-private:
-    Server server;
 };
 
 #endif // DOCKERMAMA_H

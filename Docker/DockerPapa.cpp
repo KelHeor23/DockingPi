@@ -58,8 +58,6 @@ void DockerPapa::undocking()
 
 void DockerPapa::connect()
 {
-    client.connect(address_g, port_g);
-
     std::cout << "Connection complite!" << std::endl;
 }
 

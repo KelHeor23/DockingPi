@@ -8,8 +8,6 @@
 
 #include "Docker.h"
 
-#include "../Exchange/Client.h"
-
 /*!
     \brief Класс описывающий модуль стыковки для устройства Papa
 */
@@ -70,8 +68,6 @@ private:
     void cargoTransferEnding();
 
 private:
-    Client client;
-
     int cargoPosStart = 0;
     bool firstFlag = true;
 };
