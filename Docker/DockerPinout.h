@@ -29,9 +29,9 @@ constexpr uint8_t PIN_ODOMETER_CARGO     = 2;
 /// Пин стрела выдвинута
 constexpr uint8_t PIN_ROD_EXTENTION     = 14;
 /// Пин левый крюк активирован
-constexpr uint8_t PIN_LEFT_HOOK_ACTIVE  = 13;
+constexpr uint8_t PIN_LEFT_HOOK_ACTIVE  = 7;
 /// Пин правый крюк активирован
-constexpr uint8_t PIN_RIGHT_HOOK_ACTIVE = 15;
+constexpr uint8_t PIN_RIGHT_HOOK_ACTIVE = 5;
 /// Пин телега на границе
 constexpr uint8_t PIN_CARGO_ON_BORDER   = 16;
 /// Пин телега на домашней/стартовой позиции

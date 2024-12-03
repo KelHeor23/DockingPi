@@ -38,12 +38,12 @@ void DockerMama::undocking()
         llock = false;
     }
 
-    if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
+    /*if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms500);
     else {
         cargoTransferSpeed = PCA9685::ms1500;
         stop();
-    }
+    }*/
 }
 
 void DockerMama::connect()
@@ -54,7 +54,7 @@ void DockerMama::connect()
 void DockerMama::lockingHooks()
 { 
     if (digitalRead(PIN_LEFT_HOOK_ACTIVE) == HIGH) {
-        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1000);
+        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1000 + 0xA);
         llock = true;
     } else {
         llock = false;
