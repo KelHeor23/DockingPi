@@ -131,7 +131,7 @@ public:
     bool rlock = false;
 
     /// Плата генерирующая ШИМ сигналы для серв
-    PCA9685::PCA9685 pca{"/dev/i2c-2"};
+    PCA9685::PCA9685 pca{"/dev/i2c-5"};
 
     /// Скорость телеги в момент ее передачи
     std::uint16_t cargoTransferSpeed = PCA9685::ms1500;
