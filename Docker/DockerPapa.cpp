@@ -41,7 +41,7 @@ void DockerPapa::undocking()
 
     if (MSG_papa[2] == '1') {   // Сначала отпихиваем другой дрон
         pushAway();
-    } else if (MSG_papa[1] == '1')  // А затем, убираем стрелу
+    } else if (MSG_papa[1] == '1' || digitalRead(PIN_ROD_RETRACTED) == LOW)  // А затем, убираем стрелу
         rodRetraction();
 
     /*if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW){
