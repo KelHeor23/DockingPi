@@ -8,7 +8,8 @@ DockerMama::DockerMama() {
 }
 
 void DockerMama::docking()
-{    
+{
+    MSG_papa = "1000";
     MSG_mama[0] = '1';
     if (MSG_papa[0] == '1'){
         if (MSG_mama[1] == '0'){    // Закрываем крюки
