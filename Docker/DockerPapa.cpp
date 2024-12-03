@@ -41,7 +41,7 @@ void DockerPapa::undocking()
 
     if (MSG_papa[2] == '1') {   // Сначала отпихиваем другой дрон
         pushAway();
-    } else if (MSG_papa[1] == '1' || digitalRead(PIN_ROD_RETRACTED) == LOW)  // А затем, убираем стрелу
+    } else if (digitalRead(PIN_ROD_RETRACTED) == LOW)  // А затем, убираем стрелу
         rodRetraction();
 
     /*if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW){
@@ -70,7 +70,6 @@ void DockerPapa::rodExtension()
 
     if (digitalRead(PIN_ROD_EXTENTION) == HIGH && odometerCargo.getCurPos() <= cargoPosStart - balance_cargo_g){
         stop();
-        printw("done rodExtension\n");
         std::cout << "done rodExtension\n" << std::endl;
         MSG_papa[1] = '1';
         return;
@@ -98,7 +97,6 @@ void DockerPapa::rodRetraction()
 {
     if (digitalRead(PIN_ROD_RETRACTED) == HIGH && odometerCargo.getCurPos() >= cargoPosStart){
         stop();
-        printw("done rodRetraction\n");
         std::cout << "done rodRetraction\n" << std::endl;
         MSG_papa[1] = '0';
         return;
