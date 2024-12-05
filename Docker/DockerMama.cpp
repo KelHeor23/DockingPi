@@ -36,6 +36,7 @@ void DockerMama::undocking()
         MSG_mama[1] = '0';
         rlock = false;
         llock = false;
+        printw("Hooks ulocked\n");
     }
 
     /*if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
@@ -54,7 +55,7 @@ void DockerMama::connect()
 void DockerMama::lockingHooks()
 { 
     if (digitalRead(PIN_LEFT_HOOK_ACTIVE) == HIGH) {
-        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1000 + 0xA);
+        //pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1000 + 0xA);
         llock = true;
     } else {
         llock = false;
@@ -62,7 +63,7 @@ void DockerMama::lockingHooks()
     }
 
     if (digitalRead(PIN_RIGHT_HOOK_ACTIVE) == HIGH) {
-        pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms2000);
+        //pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms2000);
         rlock = true;
     } else {
         rlock = false;
@@ -71,6 +72,7 @@ void DockerMama::lockingHooks()
 
     if (llock && rlock){
         MSG_mama[1] = '1';
+        printw("Hooks locked\n");
     }
 }
 
