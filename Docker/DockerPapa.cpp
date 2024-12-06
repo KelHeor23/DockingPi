@@ -10,8 +10,11 @@ DockerPapa::DockerPapa() {}
 
 void DockerPapa::docking()
 {
-    MSG_mama = "100";
     MSG_papa[0] = '1';
+
+    clientPapa.writeMsgPapa(MSG_papa);
+    MSG_mama = clientPapa.readMsgMama();
+
     if (MSG_mama[0] == '1'){
         if (MSG_papa[1] == '0')
             rodExtension();

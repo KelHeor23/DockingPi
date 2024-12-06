@@ -21,6 +21,9 @@ add_executable(DockingPi main.cpp
     PayloadMechanisms/PCA9685/PCA9685.h PayloadMechanisms/PCA9685/PCA9685.cpp PayloadMechanisms/PCA9685/Constants.h
     PayloadMechanisms/Odometer/Odometer.h PayloadMechanisms/Odometer/Odometer.cpp
     config.h config.cpp
+    Exchange/P2P/client.h Exchange/P2P/client.cpp
+    Exchange/P2P/server.h Exchange/P2P/server.cpp
+
 )
 
 find_library(WIRINGPI_LIBRARIES wiringPi)
