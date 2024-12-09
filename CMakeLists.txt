@@ -23,6 +23,7 @@ add_executable(DockingPi main.cpp
     config.h config.cpp
     Exchange/P2P/client.h Exchange/P2P/client.cpp
     Exchange/P2P/server.h Exchange/P2P/server.cpp
+    Exchange/P2P/Base.h
 
 )
 
