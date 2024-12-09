@@ -3,3 +3,4 @@ cmake
 pybind11-dev
 python3-dev
 libi2c-dev
+libboost-all-dev
