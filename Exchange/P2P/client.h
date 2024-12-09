@@ -12,7 +12,7 @@ public:
     void writeMsgPapa(std::string str);
 
 private:
-    void client_to_server_exchange();
+    void exchange();
 };
 
 #endif // CLIENT_H

@@ -9,6 +9,7 @@
 using boost::asio::ip::tcp;
 
 Client::Client() {
+    exchange();
 }
 
 std::string Client::readMsgMama()
@@ -23,7 +24,7 @@ void Client::writeMsgPapa(std::string str)
     msgPapa = str;
 }
 
-void Client::client_to_server_exchange()
+void Client::exchange()
 {
     // Инициализация io_service
     boost::asio::io_service io_service;
