@@ -8,11 +8,10 @@ class Server : public Base
 public:
     Server();
 
-    std::string readMsgPapa();
-    void writeMsgMama(std::string str);
+    void exchange();
 
 private:
-    void exchange();
+    tcp::acceptor acceptor;
 };
 
 #endif // SERVER_H

@@ -8,7 +8,7 @@
 #include <thread>
 #include <unistd.h>
 
-#include <ncurses.h>
+//#include <ncurses.h>
 #include <wiringPi.h>
 
 #include "Docker/DockerFactory.h"
@@ -75,15 +75,6 @@ int main(int argc, char *argv[])
 
     }
     //-----------------------------------------------------------------------------------------------
-
-    //
-    /*
-    try {
-        docker->connect();
-    } catch (const char* msg) {
-        std::cout << msg << std::endl;
-    }*/
-
     if (useJoystick){
         MavlinkExchange mavExchange;
         if (!mavExchange.init())
@@ -107,7 +98,7 @@ int main(int argc, char *argv[])
             //exec_freq();
         }
     } else {
-        initscr();
+       /* initscr();
         noecho();
         cbreak();
         keypad(stdscr, TRUE);
@@ -147,7 +138,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        endwin();
+        endwin();*/
     }
     return 0;
 }

@@ -55,5 +55,5 @@ private:
     void cargoTransferEnding();
 
     Server serverMama;
-
+};
 #endif // DOCKERMAMA_H

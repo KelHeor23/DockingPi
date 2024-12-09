@@ -8,10 +8,6 @@ class Client : public Base
 public:
     Client();
 
-    std::string readMsgMama();
-    void writeMsgPapa(std::string str);
-
-private:
     void exchange();
 };
 

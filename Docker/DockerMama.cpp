@@ -2,8 +2,6 @@
 #include <iostream>
 #include <wiringPi.h>
 
-#include "../config.h"
-
 DockerMama::DockerMama() {
 }
 
@@ -11,6 +9,7 @@ void DockerMama::docking()
 {
     MSG_mama[0] = '1';
 
+    serverMama.exchange();
     serverMama.writeMsgMama(MSG_mama);
     MSG_papa = serverMama.readMsgPapa();
 
