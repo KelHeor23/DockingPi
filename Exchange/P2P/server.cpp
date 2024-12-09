@@ -1,6 +1,7 @@
 #include "server.h"
 #include <boost/asio.hpp>
 #include <iostream>
+#include "../../config.h"
 
 using boost::asio::ip::tcp;
 
@@ -23,7 +24,7 @@ void Server::writeMsgMama(std::string str)
 void Server::exchange()
 {
     boost::asio::io_service io_service;
-    tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), 1234));
+    tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), port_g));
 
     while (true)
     {

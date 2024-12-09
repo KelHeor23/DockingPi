@@ -8,8 +8,12 @@ DockerMama::DockerMama() {
 }
 
 void DockerMama::docking()
-{    
+{
     MSG_mama[0] = '1';
+
+    serverMama.writeMsgMama(MSG_mama);
+    MSG_papa = serverMama.readMsgPapa();
+
     if (MSG_papa[0] == '1'){
         if (MSG_mama[1] == '0'){    // Закрываем крюки
             lockingHooks();
