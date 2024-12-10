@@ -54,6 +54,12 @@ private:
     */
     void cargoTransferEnding();
 
+    /*!
+        \brief Функция дергающая обмен с папой и актуализирующая сообщения
+    */
+    void papaExchange();
+
+
     Server serverMama;
 };
 #endif // DOCKERMAMA_H
