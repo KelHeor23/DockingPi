@@ -9,7 +9,11 @@ Server::Server() : acceptor(io_service, tcp::endpoint(tcp::v4(), port_g)) {
 
 void Server::exchange()
 {
-    if (socket.is_open()){
+    if (!isConnect) {
+        acceptor.accept(socket);
+        std::cout << "Client connected" << std::endl;
+        isConnect = true;
+    } else {
         try {
             // Принятие сообщения
             boost::asio::streambuf buf;
@@ -28,9 +32,7 @@ void Server::exchange()
             std::cout << "Client disconect" << std::endl;
             std::cerr << "Error: " << e.what() << std::endl;
             socket.close();
+            isConnect = false;
         }
-    } else {
-        acceptor.accept(socket);
-        std::cout << "Client connected" << std::endl;
     }
 }

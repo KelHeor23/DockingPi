@@ -12,6 +12,7 @@ public:
 
 private:
     tcp::acceptor acceptor;
+    bool isConnect = false;
 };
 
 #endif // SERVER_H
