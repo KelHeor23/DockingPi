@@ -13,8 +13,18 @@ Client::Client() {
 
 void Client::exchange()
 {
-    if (checkConnection()){
-        socket.connect(tcp::endpoint(boost::asio::ip::address::from_string(address_g), port_g));
+    if (!checkConnection()){
+        static bool conRefFirst = true;
+        boost::system::error_code error; // Переменная для хранения кода
+
+        socket.connect(tcp::endpoint(boost::asio::ip::address::from_string(address_g), port_g), error);
+
+        if (error && conRefFirst) {
+            std::cout << "Connection refuse. Try to connect..." << std::endl;
+            conRefFirst = false;
+        } else if (!error){
+            std::cout << "Connection complite!" << std::endl;
+        }
     } else {
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
