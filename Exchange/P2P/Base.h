@@ -34,6 +34,10 @@ public:
         msgMama = str;
     }
 
+    bool checkConnection(){
+        return socket.is_open();
+    }
+
 public:
     boost::asio::io_service io_service;
     tcp::socket socket{io_service};
