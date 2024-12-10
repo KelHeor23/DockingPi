@@ -101,10 +101,10 @@ int main(int argc, char *argv[])
 
         while (true) {
             switch(mavExchange.getStartPin()){
-            case 1:
+            case -1:
                 docker->docking();
                 break;
-            case -1:
+            case 1:
                 docker->undocking();
                 break;
             default:
