@@ -14,9 +14,6 @@ add_executable(DockingPi main.cpp
     Docker/DockerFactory.h
     Docker/DockerPinout.h
     Mavlink/MavlinkExchange.h Mavlink/MavlinkExchange.cpp
-
-
-
     Exchange/I2C/I2CPeripheral.h Exchange/I2C/I2CPeripheral.cpp
     PayloadMechanisms/PCA9685/PCA9685.h PayloadMechanisms/PCA9685/PCA9685.cpp PayloadMechanisms/PCA9685/Constants.h
     PayloadMechanisms/Odometer/Odometer.h PayloadMechanisms/Odometer/Odometer.cpp
@@ -24,19 +21,17 @@ add_executable(DockingPi main.cpp
     Exchange/P2P/client.h Exchange/P2P/client.cpp
     Exchange/P2P/server.h Exchange/P2P/server.cpp
     Exchange/P2P/Base.h
-
 )
 
 find_library(WIRINGPI_LIBRARIES wiringPi)
+find_package(Threads REQUIRED)
 
-target_link_libraries(DockingPi
-    ncurses
+target_link_libraries(DockingPi PRIVATE
+    ${CMAKE_THREAD_LIBS_INIT}
     MAVSDK::mavsdk             #All apps link against mavsdk library
     ${WIRINGPI_LIBRARIES}
     i2c
 )
-
-find_library(WIRINGPI_LIBRARIES wiringPi)
 
 include(GNUInstallDirs)
 install(TARGETS DockingPi
