@@ -11,9 +11,7 @@ void DockerPapa::docking()
 {
     MSG_papa[0] = '1';
 
-    clientPapa.exchange();
-    clientPapa.writeMsgPapa(MSG_papa);
-    MSG_mama = clientPapa.readMsgMama();
+    mamaExchange();
 
     if (MSG_mama[0] == '1'){
         if (MSG_papa[1] == '0')
@@ -35,7 +33,7 @@ void DockerPapa::docking()
 void DockerPapa::undocking()
 {
     MSG_papa[0] = '0';
-    clientPapa.exchange();
+    mamaExchange();
     first = true;
 
     if (MSG_papa[1] == '0'){
@@ -178,4 +176,11 @@ void DockerPapa::cargoTransferEnding()
         std::cout << "cargoTransferEnding" << std::endl;        
         lastSwitchTime = m_time::now();
     }
+}
+
+void DockerPapa::mamaExchange()
+{
+    clientPapa.exchange();
+    clientPapa.writeMsgPapa(MSG_papa);
+    MSG_mama = clientPapa.readMsgMama();
 }
