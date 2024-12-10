@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 project(DockingPi LANGUAGES CXX)
 
@@ -6,6 +6,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(MAVSDK REQUIRED)
+
+# Проверка наличия библиотеки wiringPi
+find_library(WIRINGPI_LIBRARIES wiringPi)
+if(NOT WIRINGPI_LIBRARIES)
+    message(FATAL_ERROR "wiringPi library not found!")
+endif()
+
+find_package(Threads REQUIRED)
 
 add_executable(DockingPi main.cpp
     Docker/Docker.h
@@ -23,12 +31,9 @@ add_executable(DockingPi main.cpp
     Exchange/P2P/Base.h
 )
 
-find_library(WIRINGPI_LIBRARIES wiringPi)
-find_package(Threads REQUIRED)
-
 target_link_libraries(DockingPi PRIVATE
     ${CMAKE_THREAD_LIBS_INIT}
-    MAVSDK::mavsdk             #All apps link against mavsdk library
+    MAVSDK::mavsdk             # All apps link against mavsdk library
     ${WIRINGPI_LIBRARIES}
     i2c
 )
