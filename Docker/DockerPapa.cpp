@@ -14,6 +14,7 @@ void DockerPapa::docking()
     mamaExchange();
 
     if (MSG_mama[0] == '1'){
+        cntUndocking = 0;
         if (MSG_papa[1] == '0')
             rodExtension();
         else if (MSG_mama[1] == '1' && MSG_papa[2] == '0'){
@@ -26,7 +27,11 @@ void DockerPapa::docking()
             stop();
         }
     } else {
-        undocking();
+        cntUndocking++;
+        if (cntUndocking > 3){
+            undocking();
+            cntUndocking = 0;
+        }
     }
 }
 

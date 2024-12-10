@@ -59,7 +59,7 @@ private:
     */
     void papaExchange();
 
-
+private:
     Server serverMama;
 };
 #endif // DOCKERMAMA_H

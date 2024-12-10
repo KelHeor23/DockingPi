@@ -74,7 +74,7 @@ private:
     */
     void mamaExchange();
 
-private:
+private:    
     int cargoPosStart = 0;
     bool firstFlag = true;
 

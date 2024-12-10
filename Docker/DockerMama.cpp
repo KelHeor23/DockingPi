@@ -12,6 +12,7 @@ void DockerMama::docking()
     papaExchange();
 
     if (MSG_papa[0] == '1'){
+        cntUndocking = 0;
         if (MSG_mama[1] == '0'){    // Закрываем крюки
             lockingHooks();
             cargoUnLock();          // Готовимся принимать телегу
@@ -23,7 +24,11 @@ void DockerMama::docking()
             stop();
         }
     } else {
-        undocking();
+        cntUndocking++;
+        if (cntUndocking > 3){
+            undocking();
+            cntUndocking = 0;
+        }
     }
 }
 
@@ -32,7 +37,6 @@ void DockerMama::undocking()
     MSG_mama[0] = '0';
 
     papaExchange();
-
 
     if (rlock || llock){
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
