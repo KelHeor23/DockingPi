@@ -13,7 +13,7 @@ Client::Client() {
 
 void Client::exchange()
 {
-    if (!checkConnection()){
+    if (!isConnect){
         static bool conRefFirst = true;
         boost::system::error_code error;
 
@@ -22,8 +22,10 @@ void Client::exchange()
         if (error && conRefFirst) {
             std::cout << "Connection refuse. Try to connect..." << std::endl;
             conRefFirst = false;
+            isConnect = false;
         } else if (!error){
             std::cout << "Connection complite!" << std::endl;
+            isConnect = true;
         }
     } else {
         if (socket.is_open()) {

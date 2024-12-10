@@ -9,6 +9,9 @@ public:
     Client();
 
     void exchange();
+
+private:
+    bool isConnect = false;
 };
 
 #endif // CLIENT_H
