@@ -35,6 +35,7 @@ void DockerPapa::docking()
 void DockerPapa::undocking()
 {
     MSG_papa[0] = '0';
+    clientPapa.exchange();
     first = true;
 
     if (MSG_papa[1] == '0'){
