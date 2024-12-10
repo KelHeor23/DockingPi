@@ -14,6 +14,7 @@
 #include "Docker/DockerFactory.h"
 #include "Mavlink/MavlinkExchange.h"
 
+std::atomic_char button;
 
 bool kbhit() {
     struct termios oldt, newt;
@@ -115,16 +116,23 @@ int main(int argc, char *argv[])
             //exec_freq();
         }
     } else {
-        int key, temp = '2';
+
+        std::thread t([](){
+            char key;
+            while (true){
+                if (kbhit())  // Проверяем, нажата ли клавиша
+                    key = getchar(); // Считываем нажатую клавишу
+
+                if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5')
+                    button = key;
+            }
+
+        });
+
+        t.detach();
         bool first = true;
         while (true) {
-            if (kbhit())  // Проверяем, нажата ли клавиша
-                key = getchar(); // Считываем нажатую клавишу
-
-            if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5')
-                temp = key;
-
-            switch (temp) {
+            switch (button) {
             case '1':
                 docker->docking();
                 first = true;
