@@ -37,8 +37,10 @@ void DockerPapa::docking()
 
 void DockerPapa::undocking()
 {
-    MSG_papa[0] = '0';
+    // В этом месте порадок сообщений важен
     mamaExchange();
+    MSG_papa[0] = '0';
+
     first = true;
 
     if (MSG_papa[1] == '0'){

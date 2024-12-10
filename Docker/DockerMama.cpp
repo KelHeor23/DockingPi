@@ -34,9 +34,11 @@ void DockerMama::docking()
 
 void DockerMama::undocking()
 {
+    // В этом месте порадок сообщений важен
+    papaExchange();
     MSG_mama[0] = '0';
 
-    papaExchange();
+
 
     if (rlock || llock){
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
