@@ -5,7 +5,6 @@
 #include "../../config.h"
 
 Server::Server() : acceptor(io_service, tcp::endpoint(tcp::v4(), port_g)) {
-    acceptor.accept(socket);
 }
 
 void Server::exchange()
@@ -30,5 +29,8 @@ void Server::exchange()
             std::cerr << "Error: " << e.what() << std::endl;
             socket.close();
         }
+    } else {
+        acceptor.accept(socket);
+        std::cout << "Client connected" << std::endl;
     }
 }
