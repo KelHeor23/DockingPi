@@ -8,11 +8,29 @@
 #include <thread>
 #include <unistd.h>
 
-#include <ncurses.h>
+#include <termios.h>
 #include <wiringPi.h>
 
 #include "Docker/DockerFactory.h"
 #include "Mavlink/MavlinkExchange.h"
+
+std::atomic_char button;
+
+bool kbhit() {
+    struct termios oldt, newt;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO); // Отключаем канонический режим и эхо
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    int ch = getchar();
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+
+    if(ch != EOF) {
+        ungetc(ch, stdin); // Возвращаем символ обратно в поток
+        return true;
+    }
+    return false;
+}
 
 /*!
     Функция задающая задержку в миллисекундах для каждой иттерации работы docking
@@ -75,15 +93,6 @@ int main(int argc, char *argv[])
 
     }
     //-----------------------------------------------------------------------------------------------
-
-    //
-    /*
-    try {
-        docker->connect();
-    } catch (const char* msg) {
-        std::cout << msg << std::endl;
-    }*/
-
     if (useJoystick){
         MavlinkExchange mavExchange;
         if (!mavExchange.init())
@@ -93,10 +102,10 @@ int main(int argc, char *argv[])
 
         while (true) {
             switch(mavExchange.getStartPin()){
-            case 1:
+            case -1:
                 docker->docking();
                 break;
-            case 0:
+            case 1:
                 docker->undocking();
                 break;
             default:
@@ -107,19 +116,23 @@ int main(int argc, char *argv[])
             //exec_freq();
         }
     } else {
-        initscr();
-        noecho();
-        cbreak();
-        keypad(stdscr, TRUE);
-        nodelay(stdscr, TRUE); // Устанавливаем неблокирующий режим ввода
-        int key, temp;
+
+        std::thread t([](){
+            char key;
+            while (true){
+                if (kbhit())  // Проверяем, нажата ли клавиша
+                    key = getchar(); // Считываем нажатую клавишу
+
+                if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5')
+                    button = key;
+            }
+
+        });
+
+        t.detach();
         bool first = true;
         while (true) {
-            key = getch();
-            if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5')
-                temp = key;
-
-            switch (temp) {
+            switch (button) {
             case '1':
                 docker->docking();
                 first = true;
@@ -146,8 +159,6 @@ int main(int argc, char *argv[])
                 break;
             }
         }
-
-        endwin();
     }
     return 0;
 }

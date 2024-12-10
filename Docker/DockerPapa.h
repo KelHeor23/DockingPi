@@ -8,7 +8,7 @@
 
 #include "Docker.h"
 
-#include "../Exchange/Client.h"
+#include "../Exchange/P2P/client.h"
 
 /*!
     \brief Класс описывающий модуль стыковки для устройства Papa
@@ -70,10 +70,10 @@ private:
     void cargoTransferEnding();
 
 private:
-    Client client;
-
     int cargoPosStart = 0;
     bool firstFlag = true;
+
+    Client clientPapa;
 };
 
 #endif // DOCKERPAPA_H

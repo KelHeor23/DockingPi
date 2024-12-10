@@ -2,14 +2,17 @@
 #include <iostream>
 #include <wiringPi.h>
 
-#include "../config.h"
-
 DockerMama::DockerMama() {
 }
 
 void DockerMama::docking()
-{    
+{
     MSG_mama[0] = '1';
+
+    serverMama.exchange();
+    serverMama.writeMsgMama(MSG_mama);
+    MSG_papa = serverMama.readMsgPapa();
+
     if (MSG_papa[0] == '1'){
         if (MSG_mama[1] == '0'){    // Закрываем крюки
             lockingHooks();
@@ -47,8 +50,6 @@ void DockerMama::undocking()
 
 void DockerMama::connect()
 {
-    server.connect(address_g, port_g);
-
     std::cout << "Connection complite!" << std::endl;
 }
 

@@ -8,7 +8,7 @@
 
 #include "Docker.h"
 
-#include "../Exchange/Server.h"
+#include "../Exchange/P2P/server.h"
 
 /*!
     \brief Класс описывающий модуль стыковки для устроЙства Mama
@@ -54,8 +54,6 @@ private:
     */
     void cargoTransferEnding();
 
-private:
-    Server server;
+    Server serverMama;
 };
-
 #endif // DOCKERMAMA_H

@@ -1,4 +1,3 @@
-#include <ncurses.h>
 #include <iostream>
 #include <wiringPi.h>
 
@@ -10,8 +9,12 @@ DockerPapa::DockerPapa() {}
 
 void DockerPapa::docking()
 {
-    MSG_mama = "100";
     MSG_papa[0] = '1';
+
+    clientPapa.exchange();
+    clientPapa.writeMsgPapa(MSG_papa);
+    MSG_mama = clientPapa.readMsgMama();
+
     if (MSG_mama[0] == '1'){
         if (MSG_papa[1] == '0')
             rodExtension();
@@ -32,6 +35,7 @@ void DockerPapa::docking()
 void DockerPapa::undocking()
 {
     MSG_papa[0] = '0';
+    clientPapa.exchange();
     first = true;
 
     if (MSG_papa[1] == '0'){
@@ -58,8 +62,6 @@ void DockerPapa::undocking()
 
 void DockerPapa::connect()
 {
-    client.connect(address_g, port_g);
-
     std::cout << "Connection complite!" << std::endl;
 }
 
@@ -72,7 +74,6 @@ void DockerPapa::rodExtension()
 
     if (digitalRead(PIN_ROD_EXTENTION) == HIGH && odometerCargo.getCurPos() <= cargoPosStart - balance_cargo_g){
         stop();
-        printw("done rodExtension\n");
         std::cout << "done rodExtension\n" << std::endl;
         MSG_papa[1] = '1';
         return;
@@ -89,9 +90,10 @@ void DockerPapa::rodExtension()
     if (odometerCargo.getCurPos() > cargoPosStart - balance_cargo_g){
         cargoUnLock();
         odometerCargo.setCurState(-1);
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2 - 0x5);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2 + 0x8);
     } else {
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+        cargoLock();
     }
 }
 
@@ -99,7 +101,6 @@ void DockerPapa::rodRetraction()
 {
     if (digitalRead(PIN_ROD_RETRACTED) == HIGH && odometerCargo.getCurPos() >= cargoPosStart){
         stop();
-        printw("done rodRetraction\n");
         std::cout << "done rodRetraction\n" << std::endl;
         MSG_papa[1] = '0';
         return;
@@ -116,9 +117,10 @@ void DockerPapa::rodRetraction()
     if (odometerCargo.getCurPos() < cargoPosStart){
         cargoUnLock();
         odometerCargo.setCurState(1);
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2 + 0xA);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2 - 0x7);
     } else {
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+        cargoLock();
     }
 }
 
@@ -126,7 +128,7 @@ void DockerPapa::pullingUp()
 {
     if (analogRead(PIN_DOCKING_COMPL) == HIGH){
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
-        printw("done pullingUp\n");
+        std::cout << "done pullingUp\n" << std::endl;
         MSG_papa[2] = '1';
     } else if (analogRead(PIN_ROD_RETRACTED) == HIGH){
         undocking();
@@ -140,7 +142,7 @@ void DockerPapa::pushAway()
     if (analogRead(PIN_DOCKING_COMPL) == HIGH){
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2000);
     } else {
-        printw("done pushAway\n");
+        std::cout <<  "done pushAway\n" << std::endl;
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
         MSG_papa[2] = '0';
     }
@@ -162,7 +164,7 @@ void DockerPapa::cargoTransfer()
     }
     if (analogRead(PIN_CARGO_ON_BORDER) == LOW && analogRead(PIN_CARGO_AT_HOME) == LOW){
         MSG_papa[3] = '1';
-        printw("done cargoTransfer\n");
+        std::cout <<"done cargoTransfer\n" << std::endl;
     }
 }
 
