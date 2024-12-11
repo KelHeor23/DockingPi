@@ -69,7 +69,12 @@ private:
     */
     void cargoTransferEnding();
 
-private:
+    /*!
+        \brief Функция дергающая обмен с мамой и актуализирующая сообщения
+    */
+    void mamaExchange();
+
+private:    
     int cargoPosStart = 0;
     bool firstFlag = true;
 

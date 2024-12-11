@@ -9,11 +9,10 @@ void DockerMama::docking()
 {
     MSG_mama[0] = '1';
 
-    serverMama.exchange();
-    serverMama.writeMsgMama(MSG_mama);
-    MSG_papa = serverMama.readMsgPapa();
+    papaExchange();
 
     if (MSG_papa[0] == '1'){
+        cntUndocking = 0;
         if (MSG_mama[1] == '0'){    // Закрываем крюки
             lockingHooks();
             cargoUnLock();          // Готовимся принимать телегу
@@ -25,13 +24,22 @@ void DockerMama::docking()
             stop();
         }
     } else {
-        undocking();
+        cntUndocking++;
+        if (cntUndocking > 3){
+            undocking();
+            cntUndocking = 0;
+        }
     }
 }
 
 void DockerMama::undocking()
 {
+    // В этом месте порадок сообщений важен
+    papaExchange();
     MSG_mama[0] = '0';
+
+
+
     if (rlock || llock){
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
         pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
@@ -98,4 +106,11 @@ void DockerMama::cargoTransferEnding()
 
     if (digitalRead(PIN_CARGO_AT_HOME) == HIGH)
         MSG_mama[2] = '1';
+}
+
+void DockerMama::papaExchange()
+{
+    serverMama.exchange();
+    serverMama.writeMsgMama(MSG_mama);
+    MSG_papa = serverMama.readMsgPapa();
 }

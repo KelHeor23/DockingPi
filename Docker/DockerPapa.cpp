@@ -11,11 +11,10 @@ void DockerPapa::docking()
 {
     MSG_papa[0] = '1';
 
-    clientPapa.exchange();
-    clientPapa.writeMsgPapa(MSG_papa);
-    MSG_mama = clientPapa.readMsgMama();
+    mamaExchange();
 
     if (MSG_mama[0] == '1'){
+        cntUndocking = 0;
         if (MSG_papa[1] == '0')
             rodExtension();
         else if (MSG_mama[1] == '1' && MSG_papa[2] == '0'){
@@ -28,14 +27,20 @@ void DockerPapa::docking()
             stop();
         }
     } else {
-        undocking();
+        cntUndocking++;
+        if (cntUndocking > 3){
+            undocking();
+            cntUndocking = 0;
+        }
     }
 }
 
 void DockerPapa::undocking()
 {
+    // В этом месте порадок сообщений важен
+    mamaExchange();
     MSG_papa[0] = '0';
-    clientPapa.exchange();
+
     first = true;
 
     if (MSG_papa[1] == '0'){
@@ -178,4 +183,11 @@ void DockerPapa::cargoTransferEnding()
         std::cout << "cargoTransferEnding" << std::endl;        
         lastSwitchTime = m_time::now();
     }
+}
+
+void DockerPapa::mamaExchange()
+{
+    clientPapa.exchange();
+    clientPapa.writeMsgPapa(MSG_papa);
+    MSG_mama = clientPapa.readMsgMama();
 }

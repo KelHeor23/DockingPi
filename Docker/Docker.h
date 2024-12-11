@@ -137,6 +137,8 @@ public:
     std::uint16_t cargoTransferSpeed = PCA9685::ms1500;
 
     Odometer odometerCargo{PIN_ODOMETER_CARGO};
+
+    int cntUndocking = 0;
 };
 
 #endif // DOCKER_H
