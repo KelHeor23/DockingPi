@@ -8,7 +8,6 @@ DockerMama::DockerMama() {
 void DockerMama::docking()
 {
     MSG_mama[0] = '1';
-
     papaExchange();
 
     if (MSG_papa[0] == '1'){
@@ -38,8 +37,6 @@ void DockerMama::undocking()
     papaExchange();
     MSG_mama[0] = '0';
 
-
-
     if (rlock || llock){
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
         pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
@@ -64,7 +61,7 @@ void DockerMama::connect()
 void DockerMama::lockingHooks()
 { 
     if (digitalRead(PIN_LEFT_HOOK_ACTIVE) == HIGH) {
-        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1000);
+        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1000 + 0xA);
         llock = true;
     }
 
