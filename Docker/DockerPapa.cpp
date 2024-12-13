@@ -131,11 +131,11 @@ void DockerPapa::rodRetraction()
 
 void DockerPapa::pullingUp()
 {
-    if (analogRead(PIN_DOCKING_COMPL) == HIGH){
+    if (digitalRead(PIN_DOCKING_COMPL) == HIGH){
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
         std::cout << "done pullingUp\n" << std::endl;
         MSG_papa[2] = '1';
-    } else if (analogRead(PIN_ROD_RETRACTED) == HIGH){
+    } else if (digitalRead(PIN_ROD_RETRACTED) == HIGH){
         undocking();
     } else {
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000);
@@ -144,7 +144,7 @@ void DockerPapa::pullingUp()
 
 void DockerPapa::pushAway()
 {
-    if (analogRead(PIN_DOCKING_COMPL) == HIGH){
+    if (digitalRead(PIN_DOCKING_COMPL) == HIGH){
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2000);
     } else {
         std::cout <<  "done pushAway\n" << std::endl;
@@ -167,7 +167,7 @@ void DockerPapa::cargoTransfer()
         pca.set_pwm(PCA9685::PIN_CARGO, 0,  cargoTransferSpeed);
         lastSwitchTime = m_time::now();
     }
-    if (analogRead(PIN_CARGO_ON_BORDER) == LOW && analogRead(PIN_CARGO_AT_HOME) == LOW){
+    if (digitalRead(PIN_CARGO_ON_BORDER) == LOW && digitalRead(PIN_CARGO_AT_HOME) == LOW){
         MSG_papa[3] = '1';
         std::cout <<"done cargoTransfer\n" << std::endl;
     }
