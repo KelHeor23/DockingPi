@@ -158,10 +158,11 @@ void DockerPapa::cargoTransfer()
     if (elapsedTime >= cargoAcceleration){
         if (cargoTransferSpeed + PCA9685::step < PCA9685::ms2500)
             cargoTransferSpeed += PCA9685::step;
+        odometerCargo.setCurState(1);
         cargoMove(cargoTransferSpeed);
         lastSwitchTime = m_time::now();
     }
-    if (odometerCargo.getCurPos() <= cargoPosStart + cargoLeftPapa){
+    if (odometerCargo.getCurPos() >= cargoPosStart + cargoLeftPapa){
         MSG_papa[3] = '1';
         std::cout <<"done cargoTransfer\n" << std::endl;
     }
