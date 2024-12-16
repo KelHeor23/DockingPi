@@ -70,10 +70,12 @@ int main()
     while (true) {
         switch (btn.getButton()) {
         case '1':
+            odometr.setCurState(1);
             cargoCV();
             first = true;
             break;
         case '2':
+            odometr.setCurState(-1);
             cargoCCV();
             first = true;
             break;
