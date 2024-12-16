@@ -66,6 +66,9 @@ int main()
     btn.setAllowedRegex(std::regex("[1-5]"));
     btn.run();
 
+    odometr.startObservePos();
+    odometr.setCurState(0);
+
     bool first = true;
     while (true) {
         switch (btn.getButton()) {
