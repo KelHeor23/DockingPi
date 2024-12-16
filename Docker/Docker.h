@@ -70,6 +70,22 @@ public:
     }
 
     /*!
+        \brief Функция вращения сервы телеги
+    */
+    void cargoMove(uint16_t speed = PCA9685::ms1500){
+        cargoUnLock();
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, speed);
+    }
+
+    /*!
+        \brief Функция остановки сервы телеги
+    */
+    void cargoStop(){
+        cargoLock();
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+    }
+
+    /*!
         \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
     */
     void stop(){

@@ -93,13 +93,10 @@ void DockerPapa::rodExtension()
     }
 
     if (odometerCargo.getCurPos() > cargoPosStart - balance_cargo_g){
-        cargoUnLock();
         odometerCargo.setCurState(-1);
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2 + 0x15);
-    } else {
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-        cargoLock();
-    }
+        cargoMove(PCA9685::ms1500 - PCA9685::step * 2 + 0x15);
+    } else
+        cargoStop();
 }
 
 void DockerPapa::rodRetraction()
@@ -120,13 +117,10 @@ void DockerPapa::rodRetraction()
     }
 
     if (odometerCargo.getCurPos() < cargoPosStart){
-        cargoUnLock();
         odometerCargo.setCurState(1);
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2 - 0xF);
-    } else {
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-        cargoLock();
-    }
+        cargoMove(PCA9685::ms1500 + PCA9685::step * 2 - 0xF);
+    } else
+        cargoStop();
 }
 
 void DockerPapa::pullingUp()
@@ -156,7 +150,7 @@ void DockerPapa::pushAway()
 void DockerPapa::cargoTransfer()
 {
     if (first){
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+        cargoStop();
         first = false;
     }
 
@@ -164,13 +158,13 @@ void DockerPapa::cargoTransfer()
     if (elapsedTime >= cargoAcceleration){
         if (cargoTransferSpeed + PCA9685::step < PCA9685::ms2500)
             cargoTransferSpeed += PCA9685::step;
-        pca.set_pwm(PCA9685::PIN_CARGO, 0,  cargoTransferSpeed);
+        cargoMove(cargoTransferSpeed);
         lastSwitchTime = m_time::now();
     }
-    if (digitalRead(PIN_CARGO_ON_BORDER) == LOW && digitalRead(PIN_CARGO_AT_HOME) == LOW){
+    /*if (digitalRead(PIN_CARGO_ON_BORDER) == LOW && digitalRead(PIN_CARGO_AT_HOME) == LOW){
         MSG_papa[3] = '1';
         std::cout <<"done cargoTransfer\n" << std::endl;
-    }
+    }*/
 }
 
 void DockerPapa::cargoTransferEnding()
@@ -179,7 +173,7 @@ void DockerPapa::cargoTransferEnding()
     if (elapsedTime >= cargoAcceleration){
         if (cargoTransferSpeed - PCA9685::step > PCA9685::ms1500)
             cargoTransferSpeed -= PCA9685::step;
-        pca.set_pwm(PCA9685::PIN_CARGO, 0,  cargoTransferSpeed);
+        cargoMove(cargoTransferSpeed);
         std::cout << "cargoTransferEnding" << std::endl;        
         lastSwitchTime = m_time::now();
     }

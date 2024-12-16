@@ -45,12 +45,12 @@ void DockerMama::undocking()
         llock = false;
     }
 
-    if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
+    /*if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms500);
     else {
         cargoTransferSpeed = PCA9685::ms1500;
         stop();
-    }
+    }*/
 }
 
 void DockerMama::connect()
@@ -78,7 +78,7 @@ void DockerMama::lockingHooks()
 void DockerMama::cargoTransferBegin()
 {
     if (first){
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+        cargoStop();
         first = false;
     }
 
@@ -86,7 +86,7 @@ void DockerMama::cargoTransferBegin()
     if (elapsedTime >= cargoAcceleration){
         if (cargoTransferSpeed + PCA9685::step < PCA9685::ms2500)
             cargoTransferSpeed += PCA9685::step;
-        pca.set_pwm(PCA9685::PIN_CARGO, 0,  cargoTransferSpeed);
+        cargoMove(cargoTransferSpeed);
         lastSwitchTime = m_time::now();
     }
 }
@@ -97,12 +97,12 @@ void DockerMama::cargoTransferEnding()
     if (elapsedTime >= cargoAcceleration){
         if (cargoTransferSpeed - PCA9685::step > PCA9685::ms1500)
             cargoTransferSpeed -= PCA9685::step;
-        pca.set_pwm(PCA9685::PIN_CARGO, 0,  cargoTransferSpeed);
+        cargoMove(cargoTransferSpeed);
         lastSwitchTime = m_time::now();
     }
 
-    if (digitalRead(PIN_CARGO_AT_HOME) == HIGH)
-        MSG_mama[2] = '1';
+    /*if (digitalRead(PIN_CARGO_AT_HOME) == HIGH)
+        MSG_mama[2] = '1';*/
 }
 
 void DockerMama::papaExchange()
