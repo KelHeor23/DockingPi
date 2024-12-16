@@ -161,10 +161,10 @@ void DockerPapa::cargoTransfer()
         cargoMove(cargoTransferSpeed);
         lastSwitchTime = m_time::now();
     }
-    /*if (digitalRead(PIN_CARGO_ON_BORDER) == LOW && digitalRead(PIN_CARGO_AT_HOME) == LOW){
+    if (odometerCargo.getCurPos() <= cargoPosStart + cargoLeftPapa){
         MSG_papa[3] = '1';
         std::cout <<"done cargoTransfer\n" << std::endl;
-    }*/
+    }
 }
 
 void DockerPapa::cargoTransferEnding()
