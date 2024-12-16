@@ -13,11 +13,17 @@ endif()
 
 find_package(Threads REQUIRED)
 
-add_executable(CountMovementCargo main.cpp)
+add_executable(CountMovementCargo main.cpp
+    ../../PayloadMechanisms/PCA9685/Constants.h ../../PayloadMechanisms/PCA9685/PCA9685.cpp ../../PayloadMechanisms/PCA9685/PCA9685.h
+    ../../PayloadMechanisms/Odometer/Odometer.cpp ../../PayloadMechanisms/Odometer/Odometer.h
+    ../../Docker/DockerPinout.h
+    ../../Common/ButtonHandler.cpp ../../Common/ButtonHandler.h
+    ../../Exchange/I2C/I2CPeripheral.cpp ../../Exchange/I2C/I2CPeripheral.h)
 
 target_link_libraries(CountMovementCargo PRIVATE
     ${CMAKE_THREAD_LIBS_INIT}
     ${WIRINGPI_LIBRARIES}
+    i2c
 )
 include(GNUInstallDirs)
 install(TARGETS CountMovementCargo

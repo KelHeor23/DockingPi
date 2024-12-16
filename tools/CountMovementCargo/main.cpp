@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <termios.h>
+#include <wiringPi.h>
 
 #include "../../PayloadMechanisms/Odometer/Odometer.h"
 #include "../../Docker/DockerPinout.h"
@@ -56,6 +57,11 @@ void stop(){
 
 int main()
 {
+    if (wiringPiSetup() == -1) {
+        std::cerr << "Ошибка инициализации WiringPi." << std::endl;
+        return 0;
+    }
+
     ButtonHandler::Button btn;
     btn.setAllowedRegex(std::regex("[1-5]"));
     btn.run();

@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <termios.h>
 #include <thread>
+#include <unistd.h>
 
 bool ButtonHandler::Button::kbhit()
 {

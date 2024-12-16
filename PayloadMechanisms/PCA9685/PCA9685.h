@@ -8,12 +8,12 @@ class I2CPeripheral;
 
 namespace PCA9685 {
 
-constexpr std::uint16_t ms500 = 0x4B;
-constexpr std::uint16_t ms1000 = 0xCA;
-constexpr std::uint16_t ms1500 = 0x125;
-constexpr std::uint16_t ms2000 = 0x18A;
-constexpr std::uint16_t ms2500 = 0x1EF;
-constexpr std::uint16_t step = 0x15;
+constexpr uint16_t ms500 = 0x4B;
+constexpr uint16_t ms1000 = 0xCA;
+constexpr uint16_t ms1500 = 0x125;
+constexpr uint16_t ms2000 = 0x18A;
+constexpr uint16_t ms2500 = 0x1EF;
+constexpr uint16_t step = 0x15;
 
 
 class PCA9685 {
