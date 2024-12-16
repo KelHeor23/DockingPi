@@ -37,6 +37,41 @@ public:
     */
     void connect()      override;
 
+    /*!
+        \brief Функция остановки сервы телеги
+    */
+    void cargoStop() override {
+        cargoLock();
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + 0x20);
+    }
+
+    /*!
+        \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
+    */
+    void stop() override{
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + 0x20);
+        cargoLock();
+        odometerCargo.setCurState(0);
+    }
+
+    /*!
+        \brief Функция вращения сервы телеги по часовй стрелке
+    */
+    void cargoCV() override{
+        cargoUnLock();
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 4);
+    }
+
+    /*!
+        \brief Функция вращения сервы телеги против часовй стрелки
+    */
+    void cargoCCV() override{
+        cargoUnLock();
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step);
+    }
+
+
 private:
 
     /**

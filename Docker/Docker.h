@@ -56,7 +56,7 @@ public:
     /*!
         \brief Функция вращения сервы телеги по часовй стрелке
     */
-    void cargoCV(){
+    virtual void cargoCV(){
         cargoUnLock();
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2);
     }
@@ -64,7 +64,7 @@ public:
     /*!
         \brief Функция вращения сервы телеги против часовй стрелки
     */
-    void cargoCCV(){
+    virtual void cargoCCV(){
         cargoUnLock();
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2);
     }
@@ -80,7 +80,7 @@ public:
     /*!
         \brief Функция остановки сервы телеги
     */
-    void cargoStop(){
+    virtual void cargoStop(){
         cargoLock();
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
     }
@@ -88,7 +88,7 @@ public:
     /*!
         \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
     */
-    void stop(){
+    virtual void stop(){
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
         cargoLock();

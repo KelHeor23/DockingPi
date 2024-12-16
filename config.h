@@ -19,4 +19,7 @@ extern int cargoLeftPapa;
 /// Переменная определяющая расстоние на котором считаем, что телега начала переходить к маме
 extern int cargoOnBorder;
 
+/// Переменная определяющая расстоние от хвоста мамы до точки баланса мамы
+extern int cargoAtHome;
+
 #endif // CONFIG_H

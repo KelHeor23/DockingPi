@@ -1,6 +1,9 @@
-#include "DockerMama.h"
 #include <iostream>
 #include <wiringPi.h>
+
+#include "DockerMama.h"
+
+#include "../config.h"
 
 DockerMama::DockerMama() {
 }
@@ -99,6 +102,12 @@ void DockerMama::cargoTransferEnding()
             cargoTransferSpeed -= PCA9685::step;
         cargoMove(cargoTransferSpeed);
         lastSwitchTime = m_time::now();
+    }
+    odometerCargo.setCurState(1);
+
+    if (odometerCargo.getCurPos() >= cargoAtHome){
+        cargoStop();
+        MSG_mama[2] = '1';
     }
 
     /*if (digitalRead(PIN_CARGO_AT_HOME) == HIGH)
