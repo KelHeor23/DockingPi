@@ -63,13 +63,23 @@ void DockerMama::connect()
 }
 
 void DockerMama::lockingHooks()
-{ 
-    if (digitalRead(PIN_LEFT_HOOK_ACTIVE) == HIGH) {
+{
+    if (digitalRead(PIN_LEFT_HOOK_ACTIVE) == HIGH)
+        countLH++;
+    else
+        countLH = 0;
+
+    if (digitalRead(PIN_RIGHT_HOOK_ACTIVE) == HIGH)
+        countRH++;
+    else
+        countRH = 0;
+
+    if (countLH == 2) {
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1000 + 0xA);
         llock = true;
     }
 
-    if (digitalRead(PIN_RIGHT_HOOK_ACTIVE) == HIGH) {
+    if (countRH == 2) {
         pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms2000);
         rlock = true;
     }
