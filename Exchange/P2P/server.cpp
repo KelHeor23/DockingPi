@@ -23,9 +23,6 @@ void Server::exchange()
             std::getline(input_stream, message);
             writeMsgPapa(message);
 
-            // Обработка принятого сообщения
-            std::cout << "Received: " << message << std::endl;
-
             // Отправка сообщения
             boost::asio::write(socket, boost::asio::buffer(readMsgMama() + "\n"));
         } catch (const boost::system::system_error& e) {

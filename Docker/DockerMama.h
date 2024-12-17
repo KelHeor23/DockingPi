@@ -96,5 +96,6 @@ private:
 
 private:
     Server serverMama;
+    bool startCargo = false;
 };
 #endif // DOCKERMAMA_H

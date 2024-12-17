@@ -7,6 +7,6 @@ int balance_cargo_g = 45;
 
 int cargoLeftPapa = 180;
 
-int cargoOnBorder = 67;
+int cargoOnBorder = 160;
 
 int cargoAtHome = 180;

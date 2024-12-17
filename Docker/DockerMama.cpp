@@ -18,9 +18,9 @@ void DockerMama::docking()
         if (MSG_mama[1] == '0'){    // Закрываем крюки
             lockingHooks();
             cargoUnLock();          // Готовимся принимать телегу
-        } else if (MSG_papa[2] == '1' && MSG_papa[3] == '0'){  // Стыковка закончилась, готовлю серво
+        } else if (MSG_papa[2] == '1' /*&& MSG_papa[3] == '0'*/){  // Стыковка закончилась, готовлю серво
             cargoTransferBegin();
-        } else if (MSG_papa[3] == '1' && MSG_mama[2] == '0'){   // Папа передал телегу, останавливаю ее
+        } else if (/*MSG_papa[3] == '1'*/ startCargo && MSG_mama[2] == '0'){   // Папа передал телегу, останавливаю ее
             cargoTransferEnding();
         } else if (MSG_mama[2] == '1'){                         // Телега пришла, заканчиваем
             stop();
@@ -36,6 +36,7 @@ void DockerMama::docking()
 
 void DockerMama::undocking()
 {
+    startCargo = false;
     // В этом месте порадок сообщений важен
     papaExchange();
     MSG_mama[0] = '0';
@@ -80,18 +81,25 @@ void DockerMama::lockingHooks()
 
 void DockerMama::cargoTransferBegin()
 {
-    if (first){
-        cargoStop();
-        first = false;
+    odometerCargo.setCurState(1);
+
+    if (odometerCargo.getCurPos() > 0){
+        startCargo = true;
     }
 
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
+    /*if (first){
+
+        //cargoStop();
+        first = false;
+    }*/
+
+    /*auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
     if (elapsedTime >= cargoAcceleration){
         if (cargoTransferSpeed + PCA9685::step < PCA9685::ms2500)
             cargoTransferSpeed += PCA9685::step;
         cargoMove(cargoTransferSpeed);
         lastSwitchTime = m_time::now();
-    }
+    }*/
 }
 
 void DockerMama::cargoTransferEnding()
