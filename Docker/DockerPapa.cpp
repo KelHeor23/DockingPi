@@ -41,28 +41,12 @@ void DockerPapa::undocking()
     mamaExchange();
     MSG_papa[0] = '0';
 
-    first = true;
-
-    /*if (MSG_papa[1] == '0'){
-        stop();
-        return;
-    }*/
-
     if (MSG_papa[2] == '1') {   // Сначала отпихиваем другой дрон
         pushAway();
     } else if (MSG_papa[1] == '1' && odometerCargo.getCurPos() < cargoPosStart)  // А затем, убираем стрелу
         rodRetraction();
-    else {
-        if (digitalRead(PIN_ROD_RETRACTED) == LOW){
-            pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000 - 0x10);
-        } else {
-            usleep(1000);
-            if (digitalRead(PIN_ROD_RETRACTED) == HIGH)
-                pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
-        }
-    }
 
-    if (odometerCargo.getCurPos() >= cargoOnBorder) {
+    /*if (odometerCargo.getCurPos() >= cargoOnBorder) {
         cargoMove(PCA9685::ms2500);
     }
     else {
@@ -71,7 +55,7 @@ void DockerPapa::undocking()
             cargoMove(PCA9685::ms1500 - PCA9685::step * 2);
         } else
             cargoStop();
-    }
+    }*/
     if (MSG_papa[1] == '0')
         firstFlag = true;
 }
@@ -119,7 +103,7 @@ void DockerPapa::rodRetraction()
         return;
     }
 
-    if (digitalRead(PIN_ROD_RETRACTED) == LOW){        
+    if (digitalRead(PIN_ROD_RETRACTED) == LOW){
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000 - 0x10);
     } else {
         usleep(1000);
@@ -160,18 +144,14 @@ void DockerPapa::pushAway()
 
 void DockerPapa::cargoTransfer()
 {
-    if (first){
-        cargoStop();
-        first = false;
-    }
-
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
+   /*auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
     if (elapsedTime >= cargoAcceleration){
         if (cargoTransferSpeed + PCA9685::step < PCA9685::ms2500)
             cargoTransferSpeed += PCA9685::step;
         odometerCargo.setCurState(1);
         lastSwitchTime = m_time::now();
-    }
+    }*/
+    odometerCargo.setCurState(1);
     cargoMove(PCA9685::ms2000);
     if (odometerCargo.getCurPos() >= cargoOnBorder){
         MSG_papa[3] = '1';
