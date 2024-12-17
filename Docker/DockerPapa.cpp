@@ -43,15 +43,24 @@ void DockerPapa::undocking()
 
     first = true;
 
-    if (MSG_papa[1] == '0'){
+    /*if (MSG_papa[1] == '0'){
         stop();
         return;
-    }
+    }*/
 
     if (MSG_papa[2] == '1') {   // Сначала отпихиваем другой дрон
         pushAway();
-    } else if (MSG_papa[1] == '1')  // А затем, убираем стрелу
+    } else if (MSG_papa[1] == '1' && odometerCargo.getCurPos() < cargoPosStart)  // А затем, убираем стрелу
         rodRetraction();
+    else {
+        if (digitalRead(PIN_ROD_RETRACTED) == LOW){
+            pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000 - 0x10);
+        } else {
+            usleep(1000);
+            if (digitalRead(PIN_ROD_RETRACTED) == HIGH)
+                pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
+        }
+    }
 
     if (odometerCargo.getCurPos() >= cargoOnBorder) {
         cargoMove(PCA9685::ms2500);
