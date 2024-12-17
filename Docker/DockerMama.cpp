@@ -105,13 +105,14 @@ void DockerMama::cargoTransferBegin()
 
 void DockerMama::cargoTransferEnding()
 {
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
+    /*auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
     if (elapsedTime >= cargoAcceleration){
         if (cargoTransferSpeed - PCA9685::step > PCA9685::ms1500)
             cargoTransferSpeed -= PCA9685::step;
         cargoMove(cargoTransferSpeed);
         lastSwitchTime = m_time::now();
-    }
+    }*/
+    cargoMove(PCA9685::ms2000 + 0x20);
     odometerCargo.setCurState(1);
 
     if (odometerCargo.getCurPos() >= cargoAtHome){
