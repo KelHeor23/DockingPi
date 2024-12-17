@@ -18,7 +18,7 @@ void DockerMama::docking()
         if (MSG_mama[1] == '0'){    // Закрываем крюки
             lockingHooks();
             cargoUnLock();          // Готовимся принимать телегу
-        } else if (MSG_papa[2] == '1' /*&& MSG_papa[3] == '0'*/){  // Стыковка закончилась, готовлю серво
+        } else if (MSG_papa[2] == '1' && !startCargo /*&& MSG_papa[3] == '0'*/){  // Стыковка закончилась, готовлю серво
             cargoTransferBegin();
         } else if (/*MSG_papa[3] == '1'*/ startCargo && MSG_mama[2] == '0'){   // Папа передал телегу, останавливаю ее
             cargoTransferEnding();
@@ -94,7 +94,6 @@ void DockerMama::cargoTransferBegin()
     odometerCargo.setCurState(1);
 
     if (odometerCargo.getCurPos() > 0){
-        std::cout << odometerCargo.getCurPos() << std::endl;
         startCargo = true;
     }
 
