@@ -84,6 +84,7 @@ void DockerMama::cargoTransferBegin()
     odometerCargo.setCurState(1);
 
     if (odometerCargo.getCurPos() > 0){
+        std::cout << odometerCargo.getCurPos() << std::endl;
         startCargo = true;
     }
 
