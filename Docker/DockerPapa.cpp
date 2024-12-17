@@ -43,7 +43,7 @@ void DockerPapa::undocking()
 
     if (MSG_papa[2] == '1') {   // Сначала отпихиваем другой дрон
         pushAway();
-    } else if (MSG_papa[1] == '1' && odometerCargo.getCurPos() < cargoPosStart)  // А затем, убираем стрелу
+    } else if (MSG_papa[1] == '1')  // А затем, убираем стрелу
         rodRetraction();
 
     /*if (odometerCargo.getCurPos() >= cargoOnBorder) {

@@ -29,8 +29,22 @@ public:
         Создает экземпляр модуля стыковки, забает базовое полежение сервов
     */
     Docker() {
+        pinMode(PIN_ODOMETER_CARGO, INPUT);
+        pullUpDnControl(PIN_ODOMETER_CARGO, PUD_DOWN);
+        pinMode(PIN_ROD_EXTENTION, INPUT);
+        pullUpDnControl(PIN_ROD_EXTENTION, PUD_DOWN);
+        pinMode(PIN_LEFT_HOOK_ACTIVE, INPUT);
+        pullUpDnControl(PIN_LEFT_HOOK_ACTIVE, PUD_DOWN);
+        pinMode(PIN_RIGHT_HOOK_ACTIVE, INPUT);
+        pullUpDnControl(PIN_RIGHT_HOOK_ACTIVE, PUD_DOWN);
+        pinMode(PIN_CARGO_ON_BORDER, INPUT);
+        pullUpDnControl(PIN_CARGO_ON_BORDER, PUD_DOWN);
         pinMode(PIN_CARGO_AT_HOME, INPUT);
-        pullUpDnControl(PIN_CARGO_AT_HOME, PUD_UP);
+        pullUpDnControl(PIN_CARGO_AT_HOME, PUD_DOWN);
+        pinMode(PIN_DOCKING_COMPL, INPUT);
+        pullUpDnControl(PIN_DOCKING_COMPL, PUD_DOWN);
+        pinMode(PIN_ROD_RETRACTED, INPUT);
+        pullUpDnControl(PIN_ROD_RETRACTED, PUD_DOWN);
 
         pca.set_pwm_freq(50.0);
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
@@ -95,7 +109,7 @@ public:
     virtual void stop(){
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-        //cargoLock();
+        cargoLock();
         odometerCargo.setCurState(0);
     }
 
