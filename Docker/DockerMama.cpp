@@ -18,9 +18,9 @@ void DockerMama::docking()
         if (MSG_mama[1] == '0'){    // Закрываем крюки
             lockingHooks();
             cargoUnLock();          // Готовимся принимать телегу
-        } else if (MSG_papa[2] == '1' && !startCargo /*&& MSG_papa[3] == '0'*/){  // Стыковка закончилась, готовлю серво
+        } else if (MSG_papa[2] == '1' && MSG_papa[3] == '0'){  // Стыковка закончилась, готовлю серво
             cargoTransferBegin();
-        } else if (/*MSG_papa[3] == '1'*/ startCargo && MSG_mama[2] == '0'){   // Папа передал телегу, останавливаю ее
+        } else if (MSG_mama[2] == '0'){   // Папа передал телегу, останавливаю ее
             cargoTransferEnding();
         } else if (MSG_mama[2] == '1'){                         // Телега пришла, заканчиваем
             stop();
@@ -97,6 +97,9 @@ void DockerMama::cargoTransferBegin()
         startCargo = true;
     }
 
+    cargoMove(PCA9685::ms2000 + 0x20);
+    odometerCargo.setCurState(1);
+
     /*if (first){
 
         //cargoStop();
@@ -120,17 +123,20 @@ void DockerMama::cargoTransferEnding()
             cargoTransferSpeed -= PCA9685::step;
         cargoMove(cargoTransferSpeed);
         lastSwitchTime = m_time::now();
-    }*/
-    cargoMove(PCA9685::ms2000 + 0x20);
+    }
     odometerCargo.setCurState(1);
+    cargoMove(PCA9685::ms2000 + 0x20);
 
-    if (odometerCargo.getCurPos() >= cargoAtHome){
+*/
+    if (digitalRead(PIN_CARGO_AT_HOME) == HIGH)
+        countCH++;
+    else
+        countCH = 0;
+
+    if (countCH == 3) {
         cargoStop();
         MSG_mama[2] = '1';
     }
-
-    /*if (digitalRead(PIN_CARGO_AT_HOME) == HIGH)
-        MSG_mama[2] = '1';*/
 }
 
 void DockerMama::papaExchange()

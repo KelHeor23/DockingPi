@@ -10,6 +10,7 @@
 #include <chrono>
 #include <iostream>
 #include <string>
+#include <wiringPi.h>
 
 #include "../PayloadMechanisms/PCA9685/PCA9685.h"
 #include "../PayloadMechanisms/Odometer/Odometer.h"
@@ -28,6 +29,9 @@ public:
         Создает экземпляр модуля стыковки, забает базовое полежение сервов
     */
     Docker() {
+        pinMode(PIN_CARGO_AT_HOME, INPUT);
+        pullUpDnControl(PIN_CARGO_AT_HOME, PUD_UP);
+
         pca.set_pwm_freq(50.0);
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
         pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);

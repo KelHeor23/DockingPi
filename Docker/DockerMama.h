@@ -99,5 +99,6 @@ private:
     bool startCargo = false;
     int countRH = 0;
     int countLH = 0;
+    int countCH = 0;
 };
 #endif // DOCKERMAMA_H
