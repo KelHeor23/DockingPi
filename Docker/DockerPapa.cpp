@@ -57,9 +57,10 @@ void DockerPapa::undocking()
         cargoMove(PCA9685::ms2500);
     }
     else {
-        if (odometerCargo.getCurPos() >= 0)
+        if (odometerCargo.getCurPos() >= 0){
+            odometerCargo.setCurState(-1);
             cargoMove(PCA9685::ms1500 - PCA9685::step * 2);
-        else
+        } else
             cargoStop();
     }
     if (MSG_papa[1] == '0')
