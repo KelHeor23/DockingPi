@@ -41,12 +41,14 @@ void DockerMama::undocking()
     papaExchange();
     MSG_mama[0] = '0';
 
-    if (rlock || llock){
-        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
-        pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
-        MSG_mama[1] = '0';
-        rlock = false;
-        llock = false;
+    if (MSG_papa[2] == '0'){
+        if (rlock || llock){
+            pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
+            pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
+            MSG_mama[1] = '0';
+            rlock = false;
+            llock = false;
+        }
     }
 
     stop();

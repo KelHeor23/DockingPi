@@ -123,7 +123,7 @@ void DockerPapa::pullingUp()
 
 void DockerPapa::pushAway()
 {
-    if (digitalRead(PIN_DOCKING_COMPL) == HIGH){
+    if (digitalRead(PIN_ROD_EXTENTION) == LOW){//if (digitalRead(PIN_DOCKING_COMPL) == HIGH){
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2000);
     } else {
         std::cout <<  "done pushAway\n" << std::endl;
