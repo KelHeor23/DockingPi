@@ -105,7 +105,7 @@ void DockerMama::cargoTransferEnding()
     else
         countCH = 0;
 
-    if (countCH == 3) {
+    if (countCH == 10) {
         cargoStop();
         MSG_mama[2] = '1';
     }
