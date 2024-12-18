@@ -121,7 +121,7 @@ void DockerPapa::rodRetraction()
 void DockerPapa::pullingUp()
 {
     if (digitalRead(PIN_DOCKING_COMPL) == HIGH){
-        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500 - 0x20);
         std::cout << "done pullingUp\n" << std::endl;
         MSG_papa[2] = '1';
     } else if (digitalRead(PIN_ROD_RETRACTED) == HIGH){
