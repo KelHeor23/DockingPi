@@ -46,16 +46,6 @@ void DockerPapa::undocking()
     } else if (MSG_papa[1] == '1')  // А затем, убираем стрелу
         rodRetraction();
 
-    /*if (odometerCargo.getCurPos() >= cargoOnBorder) {
-        cargoMove(PCA9685::ms2500);
-    }
-    else {
-        if (odometerCargo.getCurPos() >= 0){
-            odometerCargo.setCurState(-1);
-            cargoMove(PCA9685::ms1500 - PCA9685::step * 2);
-        } else
-            cargoStop();
-    }*/
     if (MSG_papa[1] == '0')
         firstFlag = true;
 }
@@ -144,13 +134,6 @@ void DockerPapa::pushAway()
 
 void DockerPapa::cargoTransfer()
 {
-   /*auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
-    if (elapsedTime >= cargoAcceleration){
-        if (cargoTransferSpeed + PCA9685::step < PCA9685::ms2500)
-            cargoTransferSpeed += PCA9685::step;
-        odometerCargo.setCurState(1);
-        lastSwitchTime = m_time::now();
-    }*/
     odometerCargo.setCurState(1);
     cargoMove(PCA9685::ms2000);
     if (odometerCargo.getCurPos() >= cargoOnBorder){

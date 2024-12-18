@@ -49,12 +49,7 @@ void DockerMama::undocking()
         llock = false;
     }
 
-    /*if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW)
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms500);
-    else {
-        cargoTransferSpeed = PCA9685::ms1500;
-        stop();
-    }*/
+    stop();
 }
 
 void DockerMama::connect()
@@ -99,35 +94,10 @@ void DockerMama::cargoTransferBegin()
 
     cargoMove(PCA9685::ms2000 + 0x20);
     odometerCargo.setCurState(1);
-
-    /*if (first){
-
-        //cargoStop();
-        first = false;
-    }*/
-
-    /*auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
-    if (elapsedTime >= cargoAcceleration){
-        if (cargoTransferSpeed + PCA9685::step < PCA9685::ms2500)
-            cargoTransferSpeed += PCA9685::step;
-        cargoMove(cargoTransferSpeed);
-        lastSwitchTime = m_time::now();
-    }*/
 }
 
 void DockerMama::cargoTransferEnding()
 {
-    /*auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
-    if (elapsedTime >= cargoAcceleration){
-        if (cargoTransferSpeed - PCA9685::step > PCA9685::ms1500)
-            cargoTransferSpeed -= PCA9685::step;
-        cargoMove(cargoTransferSpeed);
-        lastSwitchTime = m_time::now();
-    }
-    odometerCargo.setCurState(1);
-    cargoMove(PCA9685::ms2000 + 0x20);
-
-*/
     if (digitalRead(PIN_CARGO_AT_HOME) == HIGH)
         countCH++;
     else
