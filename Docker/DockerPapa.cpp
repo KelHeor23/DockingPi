@@ -24,7 +24,7 @@ void DockerPapa::docking()
         } else if (MSG_papa[3] == '1' && MSG_mama[1] == '0') {
             cargoTransferEnding();
         } else if (MSG_mama[2] == '1') {
-            stop();
+            undocking();
         }
     } else {
         cntUndocking++;
