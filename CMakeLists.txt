@@ -29,6 +29,7 @@ add_executable(DockingPi main.cpp
     Exchange/P2P/client.h Exchange/P2P/client.cpp
     Exchange/P2P/server.h Exchange/P2P/server.cpp
     Exchange/P2P/Base.h
+    Common/ButtonHandler.h Common/ButtonHandler.cpp
 )
 
 target_link_libraries(DockingPi PRIVATE

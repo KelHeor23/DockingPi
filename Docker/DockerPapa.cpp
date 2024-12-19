@@ -41,26 +41,11 @@ void DockerPapa::undocking()
     mamaExchange();
     MSG_papa[0] = '0';
 
-    first = true;
-
-    if (MSG_papa[1] == '0'){
-        stop();
-        return;
-    }
-
     if (MSG_papa[2] == '1') {   // Сначала отпихиваем другой дрон
         pushAway();
     } else if (MSG_papa[1] == '1')  // А затем, убираем стрелу
         rodRetraction();
 
-    /*if (digitalRead(PIN_CARGO_ON_BORDER) == HIGH && digitalRead(PIN_CARGO_AT_HOME) == LOW){
-        cargoUnLock();
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms2500);
-    }
-    else {
-        cargoTransferSpeed = PCA9685::ms1500;
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-    }*/
     if (MSG_papa[1] == '0')
         firstFlag = true;
 }
@@ -84,8 +69,8 @@ void DockerPapa::rodExtension()
         return;
     }
 
-    if (digitalRead(PIN_ROD_EXTENTION) == LOW){        
-        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2000);
+    if (digitalRead(PIN_ROD_EXTENTION) == LOW){
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2000 - 0x5);
     } else {
         usleep(1000);
         if (digitalRead(PIN_ROD_EXTENTION) == HIGH)
@@ -93,13 +78,10 @@ void DockerPapa::rodExtension()
     }
 
     if (odometerCargo.getCurPos() > cargoPosStart - balance_cargo_g){
-        cargoUnLock();
         odometerCargo.setCurState(-1);
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2 + 0x8);
-    } else {
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-        cargoLock();
-    }
+        cargoMove(PCA9685::ms1500 - PCA9685::step * 2 + 0x15);
+    } else
+        cargoStop();
 }
 
 void DockerPapa::rodRetraction()
@@ -111,8 +93,8 @@ void DockerPapa::rodRetraction()
         return;
     }
 
-    if (digitalRead(PIN_ROD_RETRACTED) == LOW){        
-        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000);
+    if (digitalRead(PIN_ROD_RETRACTED) == LOW){
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000 - 0x10);
     } else {
         usleep(1000);
         if (digitalRead(PIN_ROD_RETRACTED) == HIGH)
@@ -120,22 +102,19 @@ void DockerPapa::rodRetraction()
     }
 
     if (odometerCargo.getCurPos() < cargoPosStart){
-        cargoUnLock();
         odometerCargo.setCurState(1);
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2 - 0x7);
-    } else {
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-        cargoLock();
-    }
+        cargoMove(PCA9685::ms1500 + PCA9685::step * 2 - 0xF);
+    } else
+        cargoStop();
 }
 
 void DockerPapa::pullingUp()
 {
-    if (analogRead(PIN_DOCKING_COMPL) == HIGH){
-        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
+    if (digitalRead(PIN_DOCKING_COMPL) == HIGH){
+        pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500 - 0x20);
         std::cout << "done pullingUp\n" << std::endl;
         MSG_papa[2] = '1';
-    } else if (analogRead(PIN_ROD_RETRACTED) == HIGH){
+    } else if (digitalRead(PIN_ROD_RETRACTED) == HIGH){
         undocking();
     } else {
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1000);
@@ -144,7 +123,7 @@ void DockerPapa::pullingUp()
 
 void DockerPapa::pushAway()
 {
-    if (analogRead(PIN_DOCKING_COMPL) == HIGH){
+    if (digitalRead(PIN_ROD_EXTENTION) == LOW){//if (digitalRead(PIN_DOCKING_COMPL) == HIGH){
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms2000);
     } else {
         std::cout <<  "done pushAway\n" << std::endl;
@@ -155,19 +134,9 @@ void DockerPapa::pushAway()
 
 void DockerPapa::cargoTransfer()
 {
-    if (first){
-        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
-        first = false;
-    }
-
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(m_time::now() - lastSwitchTime).count();
-    if (elapsedTime >= cargoAcceleration){
-        if (cargoTransferSpeed + PCA9685::step < PCA9685::ms2500)
-            cargoTransferSpeed += PCA9685::step;
-        pca.set_pwm(PCA9685::PIN_CARGO, 0,  cargoTransferSpeed);
-        lastSwitchTime = m_time::now();
-    }
-    if (analogRead(PIN_CARGO_ON_BORDER) == LOW && analogRead(PIN_CARGO_AT_HOME) == LOW){
+    odometerCargo.setCurState(1);
+    cargoMove(PCA9685::ms2000);
+    if (odometerCargo.getCurPos() >= cargoOnBorder){
         MSG_papa[3] = '1';
         std::cout <<"done cargoTransfer\n" << std::endl;
     }
@@ -179,7 +148,7 @@ void DockerPapa::cargoTransferEnding()
     if (elapsedTime >= cargoAcceleration){
         if (cargoTransferSpeed - PCA9685::step > PCA9685::ms1500)
             cargoTransferSpeed -= PCA9685::step;
-        pca.set_pwm(PCA9685::PIN_CARGO, 0,  cargoTransferSpeed);
+        cargoMove(cargoTransferSpeed);
         std::cout << "cargoTransferEnding" << std::endl;        
         lastSwitchTime = m_time::now();
     }

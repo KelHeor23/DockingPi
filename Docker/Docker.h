@@ -10,6 +10,7 @@
 #include <chrono>
 #include <iostream>
 #include <string>
+#include <wiringPi.h>
 
 #include "../PayloadMechanisms/PCA9685/PCA9685.h"
 #include "../PayloadMechanisms/Odometer/Odometer.h"
@@ -28,6 +29,23 @@ public:
         Создает экземпляр модуля стыковки, забает базовое полежение сервов
     */
     Docker() {
+        pinMode(PIN_ODOMETER_CARGO, INPUT);
+        pullUpDnControl(PIN_ODOMETER_CARGO, PUD_DOWN);
+        pinMode(PIN_ROD_EXTENTION, INPUT);
+        pullUpDnControl(PIN_ROD_EXTENTION, PUD_DOWN);
+        pinMode(PIN_LEFT_HOOK_ACTIVE, INPUT);
+        pullUpDnControl(PIN_LEFT_HOOK_ACTIVE, PUD_DOWN);
+        pinMode(PIN_RIGHT_HOOK_ACTIVE, INPUT);
+        pullUpDnControl(PIN_RIGHT_HOOK_ACTIVE, PUD_DOWN);
+        pinMode(PIN_CARGO_ON_BORDER, INPUT);
+        pullUpDnControl(PIN_CARGO_ON_BORDER, PUD_DOWN);
+        pinMode(PIN_CARGO_AT_HOME, INPUT);
+        pullUpDnControl(PIN_CARGO_AT_HOME, PUD_DOWN);
+        pinMode(PIN_DOCKING_COMPL, INPUT);
+        pullUpDnControl(PIN_DOCKING_COMPL, PUD_DOWN);
+        pinMode(PIN_ROD_RETRACTED, INPUT);
+        pullUpDnControl(PIN_ROD_RETRACTED, PUD_DOWN);
+
         pca.set_pwm_freq(50.0);
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
         pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
@@ -56,7 +74,7 @@ public:
     /*!
         \brief Функция вращения сервы телеги по часовй стрелке
     */
-    void cargoCV(){
+    virtual void cargoCV(){
         cargoUnLock();
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 + PCA9685::step * 2);
     }
@@ -64,15 +82,31 @@ public:
     /*!
         \brief Функция вращения сервы телеги против часовй стрелки
     */
-    void cargoCCV(){
+    virtual void cargoCCV(){
         cargoUnLock();
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500 - PCA9685::step * 2);
     }
 
     /*!
+        \brief Функция вращения сервы телеги
+    */
+    void cargoMove(uint16_t speed = PCA9685::ms1500){
+        cargoUnLock();
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, speed);
+    }
+
+    /*!
+        \brief Функция остановки сервы телеги
+    */
+    virtual void cargoStop(){
+        cargoLock();
+        pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
+    }
+
+    /*!
         \brief Функция паузы стыковки. Запускаемая в бесконечном цикле.
     */
-    void stop(){
+    virtual void stop(){
         pca.set_pwm(PCA9685::PIN_ROD, 0, PCA9685::ms1500);
         pca.set_pwm(PCA9685::PIN_CARGO, 0, PCA9685::ms1500);
         cargoLock();

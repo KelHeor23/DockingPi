@@ -49,8 +49,6 @@ void Client::exchange()
             std::getline(input_stream, message);
 
             writeMsgMama(message);
-            // Обработка принятого сообщения
-            std::cout << "Received: " << message << std::endl;
         } else {
             std::cerr << "Connection refuse. Try to connect..." << std::endl;
         }
