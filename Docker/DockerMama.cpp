@@ -72,12 +72,12 @@ void DockerMama::lockingHooks()
         countRH = 0;
 
     if (countLH == 2) {
-        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1000 + 0xA);
+        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1000 - 0x25);
         llock = true;
     }
 
     if (countRH == 2) {
-        pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms2000);
+        pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms2000 + 0x27);
         rlock = true;
     }
 
