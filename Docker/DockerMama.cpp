@@ -43,11 +43,10 @@ void DockerMama::undocking()
 
     if (MSG_papa[2] == '0'){
         if (rlock || llock){
-            pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
-            pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
+            RHunlock();
+            LHunlock();
             MSG_mama[1] = '0';
-            rlock = false;
-            llock = false;
+            std::cout << "all hooks unlocked" << std::endl;
         }
     }
 
@@ -61,27 +60,42 @@ void DockerMama::connect()
 
 void DockerMama::lockingHooks()
 {
-    if (digitalRead(PIN_LEFT_HOOK_ACTIVE) == HIGH)
+    if (digitalRead(PIN_LEFT_HOOK_ACTIVE) == HIGH){
+        std::cout << "l+" << std::endl;
         countLH++;
-    else
+    } else {
         countLH = 0;
+        std::cout << "l-" << std::endl;
+    }
 
-    if (digitalRead(PIN_RIGHT_HOOK_ACTIVE) == HIGH)
+    if (digitalRead(PIN_RIGHT_HOOK_ACTIVE) == HIGH){
         countRH++;
-    else
+        std::cout << "r+" << std::endl;
+    } else {
         countRH = 0;
+        std::cout << "r-" << std::endl;
+    }
 
     if (countLH == 2) {
         pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1000 - 0x25);
         llock = true;
+        std::cout << "LHlocked" << std::endl;
+    } else {
+        //LHunlock();
+        //std::cout << "LHunlocked" << std::endl;
     }
 
     if (countRH == 2) {
         pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms2000 + 0x27);
         rlock = true;
+        std::cout << "RHlocked" << std::endl;
+    } else {
+        //RHunlock();
+        //std::cout << "RHunlocked" << std::endl;
     }
 
     if (llock && rlock){
+        std::cout << "all hooks locked" << std::endl;
         MSG_mama[1] = '1';
     }
 }

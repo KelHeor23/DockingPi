@@ -47,11 +47,20 @@ public:
         pullUpDnControl(PIN_ROD_RETRACTED, PUD_DOWN);
 
         pca.set_pwm_freq(50.0);
-        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500);
-        pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500);
-
+        LHunlock();
+        RHunlock();
         /// Запускаю наблюдение за одометром
         odometerCargo.startObservePos();
+    }
+
+    void LHunlock(){
+        pca.set_pwm(PCA9685::PIN_LEFT_HOOK, 0, PCA9685::ms1500 - 0x25);
+        llock = false;
+    }
+
+    void RHunlock(){
+        pca.set_pwm(PCA9685::PIN_RIGHT_HOOK, 0, PCA9685::ms1500 + 0x35);
+        rlock = false;
     }
 
     virtual ~Docker(){}
